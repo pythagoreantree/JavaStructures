@@ -10,9 +10,9 @@ public interface Map<K, V> extends Container {
 
     V put(K key, V value);
 
-    boolean containsKey(Object key);
+    boolean containsKey(K key);
 
-    boolean containsValue(Object value);
+    boolean containsValue(V value);
 
     void putAll(Map<? extends K, ? extends V> m);
 
@@ -22,6 +22,6 @@ public interface Map<K, V> extends Container {
 
     Collection<V> values();
 
-    Set<MapEntry<K, V>> entrySet();
+    Set<MapPair<K,V>> entrySet();
 
 }
