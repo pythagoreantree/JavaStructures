@@ -1,12 +1,10 @@
 package util.interfaces;
 
-public interface Iterator<E> {
+import java.util.Iterator;
 
-    boolean hasNext();
+public interface Jiterator<E> extends Iterator<E> {
 
     boolean hasPrevious();
-
-    E next();
 
     E previous();
 
@@ -17,7 +15,5 @@ public interface Iterator<E> {
     void add(E e);
 
     void set(E e);
-
-    void remove();
 
 }

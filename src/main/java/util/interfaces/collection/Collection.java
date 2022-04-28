@@ -1,28 +1,39 @@
 package util.interfaces.collection;
 
+import lang.collections.Jiterable;
 import util.interfaces.Container;
 
-public interface Collection<E> extends Container, Iterable<E> {
+public interface Collection<E> extends Container, Jiterable<E> {
 
-    Object[] toArray();
+    E[] toArray();
 
-    <T> T[] toArray(T[] a);
+    E[] toArray(E[] arr);
 
-    boolean contains(Object key);
+    /*Query operations*/
+
+    boolean contains(E e);
+
+    E get(int index);
+
+    /*Modification operations*/
+
+    E add(E e, int index);
+
+    E add(E e);
+
+    E set(E e, int index);
+
+    E remove(E e);
+
+    E remove(int index);
+
+    /*Bulk operations*/
 
     boolean containsAll(Collection<?> c);
 
-    boolean add(E e);
-
-    boolean addAtIndex(int index, E e);
-
     boolean addAll(Collection<? extends E> c);
 
-    boolean replace(int index, E e);
-
     boolean replaceAll(Collection<? extends E> c, int startIndexThis, int startIndexCol, int length);
-
-    boolean remove(E e);
 
     boolean removeAll(Collection<?> c);
 
