@@ -7,7 +7,7 @@ public interface Collection<E> extends Container, Jiterable<E> {
 
     E[] toArray();
 
-    E[] toArray(E[] arr);
+    E[] toArray(int length);
 
     /*Query operations*/
 
@@ -23,9 +23,11 @@ public interface Collection<E> extends Container, Jiterable<E> {
 
     E set(E e, int index);
 
+    E remove(int index);
+
     E remove(E e);
 
-    E remove(int index);
+    void removeAllOccurences(E e);
 
     /*Bulk operations*/
 

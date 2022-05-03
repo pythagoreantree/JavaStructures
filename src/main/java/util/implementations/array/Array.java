@@ -1,13 +1,18 @@
 package util.implementations.array;
 
-import util.ArrayUtils;
 import util.interfaces.Jiterator;
 import util.interfaces.collection.Collection;
 import util.interfaces.collection.array.ArrayI;
 
 import java.util.Comparator;
 import java.util.Iterator;
+import java.util.NoSuchElementException;
 
+/*
+* To-Do
+* 1. size vs capacity (which variable shows which concept)
+* 2. test everything
+* */
 public class Array<E> implements ArrayI<E> {
 
     /*Constants*/
@@ -33,11 +38,7 @@ public class Array<E> implements ArrayI<E> {
     }
 
     public Array(Collection<? extends E> collection) {
-        if (collection.size() != 0) {
-            data = ArrayUtils.copyOf(collection.toArray(), size);
-        } else {
-            data = (E[]) new Object[]{};
-        }
+        data = collection.toArray();
     }
 
     /*Container methods realization*/
@@ -57,28 +58,53 @@ public class Array<E> implements ArrayI<E> {
 
     @Override
     public void clear() {
-        for (int i = 0; i < size; i++)
-            data[i] = null;
-        size = 0;
+//        for (int i = 0; i < size; i++)
+//            data[i] = null;
+        int current_size = size();
+        data = (E[]) new Object[current_size];
     }
 
     /*Collection base realization*/
 
     @Override
     public E[] toArray() {
-        return ArrayUtils.copyOf(data, size);
+        if (size != 0) {
+            E[] copy = (E[]) new Object[size];
+            for (int i=0; i<size; i++){
+                copy[i] = data[i];
+            }
+            return copy;
+        } else {
+            return (E[]) new Object[DEFAULT_CAPACITY];
+        }
+
     }
 
+
     @Override
-    public E[] toArray(E[] arr) {
-        if (arr.length < size)
-            return ArrayUtils.copyOf(data, arr.length);
-        System.arraycopy(data, 0, arr, 0, size);
-        if (arr.length > size)
-            for(int i = size; i < arr.length; i++){
-                arr[i] = null;
+    public E[] toArray(int arrLength) {
+        if (arrLength == 0){
+            return (E[]) new Object[DEFAULT_CAPACITY];
+        }
+        if (arrLength < size){
+            E[] copy = (E[]) new Object[arrLength];
+            for (int i=0; i<arrLength; i++){
+                copy[i] = data[i];
             }
-        return arr;
+            return copy;
+        } else if (arrLength == size) {
+            return toArray();
+        } else {
+            E[] copy = (E[]) new Object[arrLength];
+            for (int i=0; i<size; i++){
+                copy[i] = data[i];
+            }
+            //not sure it is needed
+            for(int i = size; i < arrLength; i++){
+                copy[i] = null;
+            }
+            return copy;
+        }
     }
 
     /*Query operations Implementation*/
@@ -92,20 +118,34 @@ public class Array<E> implements ArrayI<E> {
     public E get(int index) {
         if (index < 0 || index >= size)
             throw new IndexOutOfBoundsException("Index: " + index + ", Size: " + size);
-        return (E) data[index];
+        return data[index];
     }
 
     /*Modification operations Implementation*/
 
     @Override
     public E add(E e, int index) {
-        return null;
+        if (index < 0)
+            throw new IndexOutOfBoundsException("Index: " + index + ", Size: " + size);
+
+        if (index >= size){
+            return add(e);
+        }
+        int currentSize = size;
+        //what would be here after size? Nulls or rubbish?
+        ensureCapacityInternal(size + 1);
+        for (int i=currentSize-1; i>index; i--){
+            data[i] = data[i-1];
+        }
+//        System.arraycopy(data, index, data, index + 1, size - index);
+        data[index] = e;
+        return e;
     }
 
     @Override
     public E add(E e) {
         ensureCapacityInternal(size + 1);
-        data[size++] = e;
+        data[size++] = e; //разобраться, что тут значит size!
         return e;
     }
 
@@ -132,7 +172,7 @@ public class Array<E> implements ArrayI<E> {
             newCapacity = minCapacity;
         if (newCapacity - MAX_ARRAY_SIZE > 0)
             newCapacity = hugeCapacity(minCapacity);
-        data = ArrayUtils.copyOf(data, newCapacity);
+        data = toArray(newCapacity);
     }
 
     private static int hugeCapacity(int minCapacity) {
@@ -143,22 +183,64 @@ public class Array<E> implements ArrayI<E> {
 
     @Override
     public E set(E e, int index) {
-        return null;
+        if (index < 0 || index >= size)
+            throw new IndexOutOfBoundsException("Index: " + index + ", Size: " + size);
+        E oldValue = data[index];
+        data[index] = e;
+        return oldValue;
     }
 
     @Override
     public E remove(E e) {
-        return null;
+        if(!contains(e)){
+            throw new NoSuchElementException("");
+        }
+        for (int i = 0; i < size; i++) {
+            if (e == null && data[i] == null) {
+                return removeByIndex(i);
+            }
+            if (e != null && e.equals(data[i])) {
+                return removeByIndex(i);
+            }
+        }
+        return e;
+    }
+
+    private E removeByIndex(int index) {
+        E oldValue = data[index];
+        for (int i=index; i<size-1; i++){
+            data[i] = data[i+1];
+        }
+        data[size-1] = null;
+        return oldValue;
     }
 
     @Override
     public E remove(int index) {
-        return null;
+        if (index < 0 || index >= size)
+            throw new IndexOutOfBoundsException("Index: " + index + ", Size: " + size);
+
+        return removeByIndex(index);
+    }
+
+    @Override
+    public void removeAllOccurences(E e){
+        if(!contains(e)){
+            throw new NoSuchElementException("");
+        }
+        for (int i = 0; i < size; i++) {
+            if (e == null && data[i] == null) {
+                removeByIndex(i);
+            }
+            if (e != null && e.equals(data[i])) {
+                removeByIndex(i);
+            }
+        }
     }
 
     @Override
     public void sort(Comparator<? super E> comparator) {
-        ArrayUtils.sort(data, 0, size, comparator);
+//        ArrayUtils.sort(data, 0, size, comparator);
     }
 
     @Override
@@ -174,19 +256,19 @@ public class Array<E> implements ArrayI<E> {
 
     @Override
     public int lastIndexOf(E e) {
-        return 0;
+        for (int i = size-1; i >= 0; i--) {
+            if (e == null && data[i] == null)
+                return i;
+            if (e != null && e.equals(data[i]))
+                return i;
+        }
+        return -1;
     }
 
     @Override
     public Array<E> subArray(int fromIndex, int toIndex) {
         return null;
     }
-
-
-
-
-
-
 
     @Override
     public boolean containsAll(Collection<?> c) {
