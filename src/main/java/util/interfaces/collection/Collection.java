@@ -17,15 +17,15 @@ public interface Collection<E> extends Container, Jiterable<E> {
 
     /*Modification operations*/
 
-    E add(E e, int index);
+    void add(E e, int index);
 
-    E add(E e);
+    void add(E e);
 
-    E set(E e, int index);
+    void set(E e, int index);
 
-    E remove(int index);
+    void remove(int index);
 
-    E remove(E e);
+    void remove(E e);
 
     void removeAllOccurences(E e);
 
