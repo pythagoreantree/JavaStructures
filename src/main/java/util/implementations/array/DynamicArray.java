@@ -11,8 +11,7 @@ import java.util.Objects;
 
 /*
  * To-Do
- * 1. size vs capacity (which variable shows which concept)
- * 2. test everything
+ * 1. test everything
  * */
 public class DynamicArray<E> implements ArrayI<E> {
 
@@ -25,10 +24,12 @@ public class DynamicArray<E> implements ArrayI<E> {
     private static final double MEMORY_DECREASE_INDEX = 0.75;
     private static final double HALF = 0.5;
 
-    int capacity = 0;
+    private int capacity = 0;
 
     /*main array to present the list*/
-    transient E[] data;
+    private transient E[] data;
+
+    private boolean allowNull = true;
 
     public DynamicArray() {
         this.data = getEmptyArray();
@@ -87,6 +88,8 @@ public class DynamicArray<E> implements ArrayI<E> {
     @Override
     public void clear() {
         data = getEmptyArray();
+        capacity = DEFAULT_CAPACITY;
+        size = 0;
     }
 
     /*Collection base realization*/
@@ -99,26 +102,23 @@ public class DynamicArray<E> implements ArrayI<E> {
     * */
     @Override
     public E[] toArray() {
-        return (size != 0)? copyArray(size): getEmptyArray();
+        return (size() != 0)? copyArray(size()): getEmptyArray();
     }
 
 
     @Override
-    public E[] toArray(int arrLength) {
-        if (arrLength == 0){
+    public E[] toArray(int length) {
+        if (length == 0){
             return getEmptyArray();
         }
-        if (arrLength < size){
-            return copyArray(arrLength);
-        } else if (arrLength == size) {
+        if (length < size){
+            return copyArray(length);
+        } else if (length == size) {
             return toArray();
         } else {
-            E[] copy = (E[]) new Object[arrLength];
-            for (int i=0; i<size; i++){
-                copy[i] = data[i];
-            }
+            E[] copy = copyArray(length, size());
             //not sure if it's needed
-            for(int i = size; i < arrLength; i++){
+            for(int i = size; i < length; i++){
                 copy[i] = null;
             }
             return copy;
@@ -128,6 +128,14 @@ public class DynamicArray<E> implements ArrayI<E> {
     private E[] copyArray(int length){
         E[] copy = (E[]) new Object[length];
         for (int i=0; i<length; i++){
+            copy[i] = data[i];
+        }
+        return copy;
+    }
+
+    private E[] copyArray(int arrLength, int fillLength){
+        E[] copy = (E[]) new Object[arrLength];
+        for (int i=0; i<fillLength; i++){
             copy[i] = data[i];
         }
         return copy;
@@ -153,7 +161,9 @@ public class DynamicArray<E> implements ArrayI<E> {
     public void add(E e, int index) {
         if (index < 0)
             throw new IndexOutOfBoundsException("Index: " + index + ", Size: " + size);
-
+        if (!allowNull && e == null){
+            throw new RuntimeException("Can't add null element to this type of array");
+        }
         if (index >= size){
             add(e);
         } else {
@@ -170,6 +180,9 @@ public class DynamicArray<E> implements ArrayI<E> {
 
     @Override
     public void add(E e) {
+        if (!allowNull && e == null){
+            throw new RuntimeException("Can't add null element to this type of array");
+        }
         ensureCapacityInternal(size + 1);
         addElem(e, size);
     }
@@ -214,6 +227,9 @@ public class DynamicArray<E> implements ArrayI<E> {
     public void set(E e, int index) {
         if (index < 0 || index >= size)
             throw new IndexOutOfBoundsException("Index: " + index + ", Size: " + size);
+        if (!allowNull && e == null){
+            throw new RuntimeException("Can't add null element to this type of array");
+        }
         data[index] = e;
     }
 
@@ -225,9 +241,11 @@ public class DynamicArray<E> implements ArrayI<E> {
         for (int i = 0; i < size; i++) {
             if (e == null && data[i] == null) {
                 removeByIndex(i);
+                break;
             }
             if (e != null && e.equals(data[i])) {
                 removeByIndex(i);
+                break;
             }
         }
     }
@@ -349,5 +367,13 @@ public class DynamicArray<E> implements ArrayI<E> {
     @Override
     public Iterator<E> iterator() {
         return null;
+    }
+
+    public boolean isAllowNull() {
+        return allowNull;
+    }
+
+    public void setAllowNull(boolean allowNull) {
+        this.allowNull = allowNull;
     }
 }
