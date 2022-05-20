@@ -1,6 +1,7 @@
 package util.collections.implementations.array.primitives;
 
 import util.collections.Jiterator;
+import util.collections.implementations.array.Array;
 import util.collections.search.BinarySearch;
 
 import java.util.Iterator;
@@ -230,7 +231,15 @@ public class IntegerArray {
     * Search block
     * */
     public int search(int elem){
-        return BinarySearch.search(data, elem);
+        return BinarySearch.search(getIntegers().toArray(), Integer.valueOf(elem));
+    }
+
+    private Array<Integer> getIntegers(){
+        Array<Integer> array = new Array<>(capacity);
+        for (int k =0; k < capacity; k++){
+            array.add(data[k]);
+        }
+        return array;
     }
 
 }

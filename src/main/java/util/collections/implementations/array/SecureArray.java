@@ -7,7 +7,7 @@ import util.collections.interfaces.collection.array.ArrayI;
 
 import java.util.Iterator;
 
-public class ArrayWithAccess<E> implements Collection<E> {
+public class SecureArray<E> implements Collection<E> {
 
     private ArrayI<E> array;
 

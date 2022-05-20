@@ -6,8 +6,4 @@ public class BinarySearch {
         return 0;
     }
 
-    public static int search(int[] arr, int elem) {
-        return 0;
-    }
-
 }
