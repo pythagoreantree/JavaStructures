@@ -1,19 +1,21 @@
-package util.collections.implementations.array.primitives;
+package util.collections.implementations.arrays.primitives;
 
 import util.collections.Jiterator;
-import util.collections.implementations.array.Array;
+import util.collections.implementations.arrays.Array;
 import util.collections.search.BinarySearch;
+import util.collections.search.Search;
 import util.collections.search.Searchable;
 
 import java.util.Iterator;
 import java.util.NoSuchElementException;
-import java.util.Objects;
 
 public class IntegerArray implements Searchable {
     private int[] data;
 
     private int capacity = 0;
     private int size = 0;
+
+    private Search search;
 
     public IntegerArray() {
         this.data = getEmptyArray();
@@ -223,7 +225,7 @@ public class IntegerArray implements Searchable {
      * */
     @Override
     public <Integer> int search(Integer elem) {
-        return BinarySearch.search(getIntegers().toArray(), elem);
+        return getSearch().search(getIntegers().toArray(), elem);
     }
 
     private Array<Integer> getIntegers() {
@@ -232,5 +234,16 @@ public class IntegerArray implements Searchable {
             array.add(data[k]);
         }
         return array;
+    }
+
+    private Search getSearch() {
+        if(search == null){
+            search = new BinarySearch();
+        }
+        return search;
+    }
+
+    public void setSearch(Search search) {
+        this.search = search;
     }
 }

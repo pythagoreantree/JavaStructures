@@ -1,6 +1,6 @@
-package util.collections.implementations.array;
+package util.collections.implementations.arrays;
 
-import util.collections.implementations.array.enums.ArrayAccess;
+import util.collections.implementations.arrays.enums.ArrayAccess;
 import util.collections.Jiterator;
 import util.collections.interfaces.collection.Collection;
 import util.collections.interfaces.collection.array.ArrayI;

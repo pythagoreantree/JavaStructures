@@ -1,8 +1,8 @@
 package util.collections.search;
 
-public class LinearSearch {
+public class LinearSearch implements Search {
 
-    public static <E> int search(E[] arr, E elem) {
+    public <E> int search(E[] arr, E elem) {
         return 0;
     }
 }

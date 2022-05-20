@@ -1,15 +1,18 @@
-package util.collections.implementations.array;
+package util.collections.implementations.arrays;
 
 import util.collections.Jiterator;
 import util.collections.interfaces.collection.Collection;
 import util.collections.interfaces.collection.array.ArrayI;
-import util.collections.search.LinearSearch;
+import util.collections.search.BinarySearch;
+import util.collections.search.Search;
 import util.collections.search.Searchable;
 
 import java.util.Comparator;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 import java.util.Objects;
+
+import static util.collections.implementations.arrays.constants.ArrayConstants.MAX_ARRAY_SIZE;
 
 /*
  * To-Do
@@ -20,7 +23,6 @@ public class DynamicArray<E> implements ArrayI<E>, Searchable {
     /*Constants*/
     private static final int DEFAULT_CAPACITY = 1;
     private static final Object[] EMPTY_ELEMENTDATA = {};
-    private static final int MAX_ARRAY_SIZE = Integer.MAX_VALUE - 8;
 
     private static final double MEMORY_INCREASE_INDEX = 1.5;
     private static final double MEMORY_DECREASE_INDEX = 0.75;
@@ -34,6 +36,8 @@ public class DynamicArray<E> implements ArrayI<E>, Searchable {
     private Class<E> eClass;
 
     private boolean allowNull = true;
+
+    private Search search;
 
     public DynamicArray(Class<E> eClass) {
         this.eClass = eClass;
@@ -392,6 +396,19 @@ public class DynamicArray<E> implements ArrayI<E>, Searchable {
 
     @Override
     public <E> int search(E elem) {
-        return LinearSearch.search(data, elem);
+        return getSearch().search(data, elem);
     }
+
+    protected Search getSearch() {
+        if (search == null){
+            search = new BinarySearch();
+        }
+        return search;
+    }
+
+    public void setSearch(Search search) {
+        this.search = search;
+    }
+
+
 }

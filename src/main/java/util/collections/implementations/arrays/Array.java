@@ -1,9 +1,10 @@
-package util.collections.implementations.array;
+package util.collections.implementations.arrays;
 
 import util.collections.Jiterator;
 import util.collections.interfaces.collection.Collection;
 import util.collections.interfaces.collection.array.ArrayI;
 import util.collections.search.BinarySearch;
+import util.collections.search.Search;
 import util.collections.search.Searchable;
 
 import java.util.Comparator;
@@ -28,6 +29,8 @@ public class Array<E> implements ArrayI<E>, Searchable {
     private transient E[] data;
 
     private boolean allowNull = true;
+
+    private Search search;
 
     public Array() {
         this.data = getEmptyArray();
@@ -297,6 +300,17 @@ public class Array<E> implements ArrayI<E>, Searchable {
 
     @Override
     public <E> int search(E elem) {
-        return BinarySearch.search(data, elem);
+        return getSearch().search(data, elem);
+    }
+
+    protected Search getSearch() {
+        if(search == null){
+            search = new BinarySearch();
+        }
+        return search;
+    }
+
+    public void setSearch(Search search) {
+        this.search = search;
     }
 }

@@ -1,4 +1,4 @@
-package util.collections.implementations.array.enums;
+package util.collections.implementations.arrays.enums;
 
 public enum ArrayAccess {
     NONE,
