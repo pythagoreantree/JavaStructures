@@ -19,7 +19,7 @@ import java.util.Objects;
 * + SMTH to make array only readable or readable/writable
 * + MayBe I need annotations or factory or builder or smth else
 * */
-public class Array<E> implements ArrayI<E>, Searchable<E> {
+public class Array<E> implements ArrayI<E>, Searchable {
 
     private static final int DEFAULT_CAPACITY = 16;
 
@@ -80,7 +80,7 @@ public class Array<E> implements ArrayI<E>, Searchable<E> {
 
     @Override
     public E[] toArray() {
-        return (size() == 0)? copyArray(size()): getEmptyArray();
+        return (size() != 0)? copyArray(size()): getEmptyArray();
     }
 
     @Override
@@ -296,7 +296,7 @@ public class Array<E> implements ArrayI<E>, Searchable<E> {
     }
 
     @Override
-    public int search(E[] arr, E elem) {
-        return BinarySearch.search(arr, elem);
+    public <E> int search(E elem) {
+        return BinarySearch.search(data, elem);
     }
 }

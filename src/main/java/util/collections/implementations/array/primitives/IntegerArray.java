@@ -3,14 +3,13 @@ package util.collections.implementations.array.primitives;
 import util.collections.Jiterator;
 import util.collections.implementations.array.Array;
 import util.collections.search.BinarySearch;
+import util.collections.search.Searchable;
 
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 import java.util.Objects;
 
-public class IntegerArray {
-    private static final int DEFAULT_CAPACITY = 0;
-
+public class IntegerArray implements Searchable {
     private int[] data;
 
     private int capacity = 0;
@@ -21,7 +20,7 @@ public class IntegerArray {
     }
 
     public IntegerArray(int initialCapacity) {
-        if (initialCapacity < 0){
+        if (initialCapacity < 0) {
             throw new IllegalArgumentException("Illegal Capacity: " + initialCapacity);
         }
         if (initialCapacity > 0) {
@@ -32,16 +31,8 @@ public class IntegerArray {
         }
     }
 
-    public IntegerArray(int[] array) {
-        Objects.requireNonNull(array);
-        //here I need to copy
-        this.data = new int[]{};
-        this.capacity = data.length;
-        this.size = 0;
-    }
-
-    private int[] getEmptyArray(){
-        return new int[DEFAULT_CAPACITY];
+    private int[] getEmptyArray() {
+        return new int[]{};
     }
 
     public int size() {
@@ -53,39 +44,39 @@ public class IntegerArray {
     }
 
     public void clear() {
-        for (int i=0; i<capacity; i++){
+        for (int i = 0; i < capacity; i++) {
             data[i] = 0;
         }
         this.size = 0;
     }
 
-    public int[] toArray() {
-        return (size() == 0)? copyArray(size()): getEmptyArray();
+    public int[] getArray() {
+        return (size() != 0)? copyArray(size()): getEmptyArray();
     }
 
-    public int[] toArray(int length) {
-        if (length == 0){
+    public int[] getArray(int length) {
+        if (length == 0) {
             return getEmptyArray();
         }
-        if (length >= size()){
-            return toArray();
+        if (length >= size()) {
+            return getArray();
         }
         return copyArray(size(), length);
     }
 
-    private int[] copyArray(int length){
+    private int[] copyArray(int length) {
         //as for the logic length would be size but
         //I need to check it in case oof other usages
         int[] copy = new int[length];
-        for (int i=0; i<length; i++){
+        for (int i = 0; i < length; i++) {
             copy[i] = data[i];
         }
         return copy;
     }
 
-    private int[] copyArray(int arrLength, int fillLength){
+    private int[] copyArray(int arrLength, int fillLength) {
         int[] copy = new int[arrLength];
-        for (int i=0; i<fillLength; i++){
+        for (int i = 0; i < fillLength; i++) {
             copy[i] = data[i];
         }
         //here I would have added zeros
@@ -112,13 +103,13 @@ public class IntegerArray {
     public void add(int iVal, int index) {
         if (index < 0 || index >= capacity)
             throw new IndexOutOfBoundsException("Index: " + index + ", Size: " + capacity);
-        if (size == capacity){
+        if (size == capacity) {
             throw new RuntimeException("No place for a new element");
         }
-        if (size < capacity){
+        if (size < capacity) {
             //I add an element in this index and all other goes right
-            for(int i=index; i<size; i++){
-                data[i+1] = data[i];
+            for (int i = index; i < size; i++) {
+                data[i + 1] = data[i];
             }
             data[index] = iVal;
             size++;
@@ -126,10 +117,10 @@ public class IntegerArray {
     }
 
     public void add(int iVal) {
-        if (size == capacity){
+        if (size == capacity) {
             throw new RuntimeException("No place for a new element");
         }
-        if (size < capacity){
+        if (size < capacity) {
             data[size] = iVal;
             size++;
         }
@@ -148,7 +139,7 @@ public class IntegerArray {
     }
 
     public void remove(int iVal) {
-        if(!contains(iVal)){
+        if (!contains(iVal)) {
             throw new NoSuchElementException("");
         }
         for (int i = 0; i < size; i++) {
@@ -160,7 +151,7 @@ public class IntegerArray {
     }
 
     public void removeAllOccurences(int iVal) {
-        if(!contains(iVal)){
+        if (!contains(iVal)) {
             throw new NoSuchElementException("");
         }
         for (int i = 0; i < size; i++) {
@@ -172,8 +163,8 @@ public class IntegerArray {
 
     private void removeByIndex(int index) {
         int lastIndex = size - 1;
-        for (int i=index; i<lastIndex; i++){
-            data[i] = data[i+1];
+        for (int i = index; i < lastIndex; i++) {
+            data[i] = data[i + 1];
         }
         data[lastIndex] = 0;
         size--;
@@ -188,7 +179,7 @@ public class IntegerArray {
     }
 
     public int lastIndexOf(int iVal) {
-        for (int i = size-1; i >= 0; i--) {
+        for (int i = size - 1; i >= 0; i--) {
             if (data[i] == iVal)
                 return i;
         }
@@ -228,18 +219,18 @@ public class IntegerArray {
     }
 
     /*
-    * Search block
-    * */
-    public int search(int elem){
-        return BinarySearch.search(getIntegers().toArray(), Integer.valueOf(elem));
+     * Search block
+     * */
+    @Override
+    public <Integer> int search(Integer elem) {
+        return BinarySearch.search(getIntegers().toArray(), elem);
     }
 
-    private Array<Integer> getIntegers(){
+    private Array<Integer> getIntegers() {
         Array<Integer> array = new Array<>(capacity);
-        for (int k =0; k < capacity; k++){
+        for (int k = 0; k < capacity; k++) {
             array.add(data[k]);
         }
         return array;
     }
-
 }

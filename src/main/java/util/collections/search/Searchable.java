@@ -1,7 +1,7 @@
 package util.collections.search;
 
-public interface Searchable<E> {
+public interface Searchable {
 
-    int search(E[] arr, E elem);
+    public <E> int search(E elem);
 
 }

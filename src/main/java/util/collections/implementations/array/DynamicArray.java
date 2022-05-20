@@ -15,7 +15,7 @@ import java.util.Objects;
  * To-Do
  * 1. test everything
  * */
-public class DynamicArray<E> implements ArrayI<E>, Searchable<E> {
+public class DynamicArray<E> implements ArrayI<E>, Searchable {
 
     /*Constants*/
     private static final int DEFAULT_CAPACITY = 1;
@@ -391,7 +391,7 @@ public class DynamicArray<E> implements ArrayI<E>, Searchable<E> {
     }
 
     @Override
-    public int search(E[] arr, E elem) {
-        return LinearSearch.search(arr, elem);
+    public <E> int search(E elem) {
+        return LinearSearch.search(data, elem);
     }
 }
