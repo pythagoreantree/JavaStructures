@@ -1,6 +1,6 @@
 package lang.collections;
 
-import util.interfaces.Jiterator;
+import util.collections.Jiterator;
 
 public interface Jiterable<T> extends Iterable<T> {
 

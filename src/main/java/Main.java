@@ -1,8 +1,3 @@
-import util.implementations.map.MapImpl;
-import util.implementations.map.MapPairImpl;
-import util.interfaces.map.Map;
-import util.interfaces.map.MapPair;
-
 import java.util.HashMap;
 
 public class Main {
