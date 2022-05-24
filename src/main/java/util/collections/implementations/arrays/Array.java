@@ -3,11 +3,10 @@ package util.collections.implementations.arrays;
 import util.collections.Jiterator;
 import util.collections.interfaces.collection.Collection;
 import util.collections.interfaces.collection.array.ArrayI;
-import util.collections.search.BinarySearch;
-import util.collections.search.Search;
+import util.collections.search.arrays.BinarySearch;
+import util.collections.search.arrays.Search;
 import util.collections.search.Searchable;
 
-import java.util.Comparator;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 import java.util.Objects;
@@ -242,8 +241,8 @@ public class Array<E> implements ArrayI<E>, Searchable {
         return -1;
     }
 
-    public void sort(Comparator<? super E> c) {
-    }
+//    public void sort(Comparator<? super E> c) {
+//    }
 
     @Override
     public ArrayI<E> subArray(int fromIndex, int toIndex) {

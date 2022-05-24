@@ -3,8 +3,8 @@ package util.collections.implementations.arrays;
 import util.collections.Jiterator;
 import util.collections.interfaces.collection.Collection;
 import util.collections.interfaces.collection.array.ArrayI;
-import util.collections.search.BinarySearch;
-import util.collections.search.Search;
+import util.collections.search.arrays.BinarySearch;
+import util.collections.search.arrays.Search;
 import util.collections.search.Searchable;
 
 import java.util.Comparator;

@@ -1,4 +1,4 @@
-package util.collections.search;
+package util.collections.search.arrays;
 
 public class LinearSearch implements Search {
 
