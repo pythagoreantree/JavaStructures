@@ -6,7 +6,7 @@ public class LinearSearch implements Search {
         return 0;
     }
 
-    public <E> int searchEdge(E[] arr, E elem) {
-        return 0;
-    }
+//    public <E> int searchEdge(E[] arr, E elem) {
+//        return 0;
+//    }
 }
