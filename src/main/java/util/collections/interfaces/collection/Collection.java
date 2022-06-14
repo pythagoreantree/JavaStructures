@@ -5,9 +5,9 @@ import util.collections.Container;
 
 public interface Collection<E> extends Container, Jiterable<E> {
 
-    E[] toArray();
+    Object[] toArray();
 
-    E[] toArray(int length);
+    Object[] toArray(int length);
 
     /*Query operations*/
 

@@ -1,11 +1,9 @@
-package util.collections.implementations.arrays;
+package util.collections.implementations.arrays.dynamic;
 
 import util.collections.Jiterator;
+import util.collections.implementations.arrays.Array;
 import util.collections.interfaces.collection.Collection;
 import util.collections.interfaces.collection.array.ArrayI;
-import util.collections.search.arrays.BinarySearch;
-import util.collections.search.arrays.Search;
-import util.collections.search.Searchable;
 
 import java.util.Comparator;
 import java.util.Iterator;
@@ -14,11 +12,7 @@ import java.util.Objects;
 
 import static util.collections.implementations.arrays.constants.ArrayConstants.MAX_ARRAY_SIZE;
 
-/*
- * To-Do
- * 1. test everything
- * */
-public class DynamicArray<E> implements ArrayI<E>, Searchable {
+public class DynamicArray<E> implements ArrayI<E> {
 
     /*Constants*/
     private static final int DEFAULT_CAPACITY = 1;
@@ -36,8 +30,6 @@ public class DynamicArray<E> implements ArrayI<E>, Searchable {
     private Class<E> eClass;
 
     private boolean allowNull = true;
-
-    private Search search;
 
     public DynamicArray(Class<E> eClass) {
         this.eClass = eClass;
@@ -60,8 +52,8 @@ public class DynamicArray<E> implements ArrayI<E>, Searchable {
 
     public DynamicArray(Collection<? extends E> collection) {
         Objects.requireNonNull(collection);
-        this.data = collection.toArray();
-        this.capacity = data.length;
+//        this.data = collection.toArray();
+//        this.capacity = data.length;
     }
 
     private E[] getArrayOfSize(Class<E> eClass, int capacity) {
@@ -118,7 +110,7 @@ public class DynamicArray<E> implements ArrayI<E>, Searchable {
      * Иначе получается DynamicArray.toArray() очень странный метод
      * Это скорее getCopy() или copy()
      * */
-    @Override
+//    @Override
     public E[] toArray() {
         return (size() != 0)? copyArray(size()): getEmptyArray(this.eClass);
     }
@@ -393,22 +385,5 @@ public class DynamicArray<E> implements ArrayI<E>, Searchable {
     public void setAllowNull(boolean allowNull) {
         this.allowNull = allowNull;
     }
-
-    @Override
-    public <E> int search(E elem) {
-        return getSearch().search(data, elem);
-    }
-
-    protected Search getSearch() {
-        if (search == null){
-            search = new BinarySearch();
-        }
-        return search;
-    }
-
-    public void setSearch(Search search) {
-        this.search = search;
-    }
-
 
 }

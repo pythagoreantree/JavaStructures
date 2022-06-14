@@ -14,7 +14,7 @@ public class SecureArray<E> implements Collection<E> {
     private ArrayAccess access = ArrayAccess.READ;
 
     @Override
-    public E[] toArray() {
+    public Object[] toArray() {
         if(access != ArrayAccess.NONE){
             return array.toArray();
         } else {
@@ -23,7 +23,7 @@ public class SecureArray<E> implements Collection<E> {
     }
 
     @Override
-    public E[] toArray(int length) {
+    public Object[] toArray(int length) {
         if(access != ArrayAccess.NONE){
             return array.toArray(length);
         } else {

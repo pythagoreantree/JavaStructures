@@ -3,41 +3,29 @@ package util.collections.implementations.arrays;
 import util.collections.Jiterator;
 import util.collections.interfaces.collection.Collection;
 import util.collections.interfaces.collection.array.ArrayI;
-import util.collections.search.arrays.BinarySearch;
-import util.collections.search.arrays.Search;
-import util.collections.search.Searchable;
 
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 import java.util.Objects;
 
-
-/*
-* To-Do: I need my custom exceptions for Array Cases
-* + AbstractArray
-* + SMTH to make restrictions on elements of the array
-* + SMTH to make array only readable or readable/writable
-* + MayBe I need annotations or factory or builder or smth else
-* */
-public class Array<E> implements ArrayI<E>, Searchable {
+public class Array<E> implements ArrayI<E> {
 
     private static final int DEFAULT_CAPACITY = 16;
 
     private int capacity = 0;
 
-    private transient E[] data;
+    private ArrayItem<E>[] data;
 
     private boolean allowNull = true;
 
-    private Search search;
-
     public Array() {
         this.data = getEmptyArray();
+        this.capacity = data.length;
     }
 
     public Array(int initialCapacity) {
         if (initialCapacity > 0) {
-            this.data = (E[]) new Object[initialCapacity];
+            this.data = new ArrayItem[initialCapacity];
             this.capacity = initialCapacity;
         } else if (initialCapacity == 0) {
             this.data = getEmptyArray();
@@ -48,13 +36,13 @@ public class Array<E> implements ArrayI<E>, Searchable {
 
     public Array(Collection<? extends E> collection) {
         Objects.requireNonNull(collection);
-        this.data = collection.toArray();
-        this.capacity = data.length;
-        this.size = collection.size();
+//        this.data = collection.toArray();
+//        this.capacity = data.length;
+//        this.size = collection.size();
     }
 
-    private E[] getEmptyArray(){
-        return (E[]) new Object[DEFAULT_CAPACITY];
+    private ArrayItem[] getEmptyArray(){
+        return new ArrayItem[DEFAULT_CAPACITY];
     }
 
     private int size = 0;
@@ -80,13 +68,18 @@ public class Array<E> implements ArrayI<E>, Searchable {
         this.size = 0;
     }
 
-    @Override
-    public E[] toArray() {
-        return (size() != 0)? copyArray(size()): getEmptyArray();
+//    @Override
+    public Object[] toArray() {
+        ArrayItem<E>[] arrayItems = copyArray(size());
+        Object[] elems = new Object[arrayItems.length];
+        for (int i = 0; i < arrayItems.length; i++){
+            elems[i] = arrayItems[i].item;
+        }
+        return elems;
     }
 
     @Override
-    public E[] toArray(int length) {
+    public Object[] toArray(int length) {
         if (length == 0){
             return getEmptyArray();
         }
@@ -96,16 +89,19 @@ public class Array<E> implements ArrayI<E>, Searchable {
         return copyArray(size(), length);
     }
 
-    private E[] copyArray(int length){
-        E[] copy = (E[]) new Object[length];
+    private ArrayItem<E>[] copyArray(int length){
+        if (length == 0)
+            return getEmptyArray();
+
+        ArrayItem<E>[] copy = new ArrayItem[length];
         for (int i=0; i<length; i++){
             copy[i] = data[i];
         }
         return copy;
     }
 
-    private E[] copyArray(int arrLength, int fillLength){
-        E[] copy = (E[]) new Object[arrLength];
+    private ArrayItem<E>[] copyArray(int arrLength, int fillLength){
+        ArrayItem<E>[] copy = new ArrayItem[arrLength];
         for (int i=0; i<fillLength; i++){
             copy[i] = data[i];
         }
@@ -121,7 +117,7 @@ public class Array<E> implements ArrayI<E>, Searchable {
     public E get(int index) {
         if (index < 0 || index >= capacity)
             throw new IndexOutOfBoundsException("Index: " + index + ", Size: " + capacity);
-        return data[index];
+        return data[index].item;
     }
 
     /*
@@ -143,7 +139,7 @@ public class Array<E> implements ArrayI<E>, Searchable {
                 data[i+1] = data[i];
             }
             size++;
-            data[index] = e;
+            data[index] = new ArrayItem<>(e);
         }
     }
 
@@ -156,7 +152,7 @@ public class Array<E> implements ArrayI<E>, Searchable {
             if (!allowNull && e == null){
                 throw new RuntimeException("Can't add null element to this type of array");
             }
-            data[size] = e;
+            data[size] = new ArrayItem<>(e);
             size++;
         }
     }
@@ -168,7 +164,7 @@ public class Array<E> implements ArrayI<E>, Searchable {
         if (!allowNull && e == null){
             throw new RuntimeException("Can't add null element to this type of array");
         }
-        data[index] = e;
+        data[index].setItem(e);
     }
 
     @Override
@@ -241,9 +237,6 @@ public class Array<E> implements ArrayI<E>, Searchable {
         return -1;
     }
 
-//    public void sort(Comparator<? super E> c) {
-//    }
-
     @Override
     public ArrayI<E> subArray(int fromIndex, int toIndex) {
         return null;
@@ -297,19 +290,19 @@ public class Array<E> implements ArrayI<E>, Searchable {
         this.allowNull = allowNull;
     }
 
-    @Override
-    public <E> int search(E elem) {
-        return getSearch().search(data, elem);
-    }
-
-    protected Search getSearch() {
-        if(search == null){
-            search = new BinarySearch();
+    private class ArrayItem<E> {
+        private E item;
+        public ArrayItem(E elem){
+            item = elem;
         }
-        return search;
+
+        public E getItem() {
+            return item;
+        }
+
+        public void setItem(E item) {
+            this.item = item;
+        }
     }
 
-    public void setSearch(Search search) {
-        this.search = search;
-    }
 }
