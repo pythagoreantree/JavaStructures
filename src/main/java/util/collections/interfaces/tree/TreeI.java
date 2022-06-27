@@ -7,9 +7,9 @@ public interface TreeI<T> {
 
     TreeNode<T> search(T key);
 
-    void insert(T key);
+    void add(T key);
 
-    void delete(T key);
+    void remove(T key);
 
     TreeNode<T> getRoot();
 

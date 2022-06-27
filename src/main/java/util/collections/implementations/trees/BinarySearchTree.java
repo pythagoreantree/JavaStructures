@@ -10,12 +10,12 @@ public class BinarySearchTree<T> implements TreeI<T> {
     }
 
     @Override
-    public void insert(T key) {
+    public void add(T key) {
 
     }
 
     @Override
-    public void delete(T key) {
+    public void remove(T key) {
 
     }
 

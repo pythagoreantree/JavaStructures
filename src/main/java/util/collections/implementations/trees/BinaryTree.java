@@ -8,6 +8,16 @@ import java.util.Queue;
 public class BinaryTree<T> implements TreeI<T> {
     public TreeNode<T> root;
 
+    public BinaryTree() {}
+
+    public BinaryTree(T key) {
+        if (root == null)
+            root = new TreeNode<>(key);
+        else
+            //I don't want to update key if root already exists
+            throw new RuntimeException("Tree is already constructed.");
+    }
+
     @Override
     public TreeNode search(T key) {
         return search(root, key);
@@ -16,17 +26,22 @@ public class BinaryTree<T> implements TreeI<T> {
     public TreeNode search(TreeNode<T> node, T key) {
         if (node == null)
             return null;
+
         if (node.key == key){
             return node;
         }
-        search(node.left, key);
-        search(node.right, key);
+        TreeNode left = search(node.left, key);
+        TreeNode right = search(node.right, key);
+
+        if (left != null && left.key == key)
+            return left;
+        if (right != null && right.key == key)
+            return right;
         return null;
     }
 
     @Override
-    public void insert(T key) {
-        //need to test thoroughly
+    public void add(T key) {
         if (root == null) {
             root = new TreeNode<T>(key);
             return;
@@ -36,7 +51,6 @@ public class BinaryTree<T> implements TreeI<T> {
 
         while (!q.isEmpty()) {
             TreeNode<T> node = q.poll();
-
             if (node.left == null) {
                 node.left = new TreeNode<T>(key);
                 break;
@@ -54,7 +68,8 @@ public class BinaryTree<T> implements TreeI<T> {
     }
 
     @Override
-    public void delete(T key) {
+    public void remove(T key) {
+        //here may be also if key == null then exception
         if (root == null)
             return;
 
@@ -63,6 +78,7 @@ public class BinaryTree<T> implements TreeI<T> {
                 root = null;
                 return;
             } else {
+                //here may be I need an exception
                 return;
             }
         }
@@ -71,6 +87,7 @@ public class BinaryTree<T> implements TreeI<T> {
         q.add(root);
         TreeNode<T> keyNode = null;
         TreeNode<T> node = null;
+        TreeNode<T> parent = null;
 
         while (!q.isEmpty()) {
             node = q.poll();
@@ -78,48 +95,25 @@ public class BinaryTree<T> implements TreeI<T> {
             if (node.key == key)
                 keyNode = node;
 
-            if (node.left != null)
-                q.add(node.left);
-
-            if (node.right != null)
-                q.add(node.right);
-        }
-
-        if (keyNode != null) {
-            T x = node.key;
-            deleteDeepest(node);
-            keyNode.key = x;
-        }
-    }
-
-    void deleteDeepest(TreeNode delNode) {
-        Queue<TreeNode> q = new LinkedList<>();
-        q.add(root);
-
-        TreeNode<T> node = null;
-
-        while (!q.isEmpty()) {
-            node = q.poll();
-
-            if (node == delNode) {
-                node = null;
-                return;
-            }
-            if (node.right != null) {
-                if (node.right == delNode) {
-                    node.right = null;
-                    return;
-                } else
-                    q.add(node.right);
-            }
-
             if (node.left != null) {
-                if (node.left == delNode) {
-                    node.left = null;
-                    return;
-                } else
-                    q.add(node.left);
+                parent = node;
+                q.add(node.left);
             }
+
+            if (node.right != null){
+                parent = node;
+                q.add(node.right);
+            }
+        }
+
+        //here may be I need an exception if keyNode is not found
+        if (keyNode != null) {
+            keyNode.key = node.key;
+            if (parent.left == node)
+                parent.left = null;
+            else if (parent.right == node)
+                parent.right = null;
+
         }
     }
 

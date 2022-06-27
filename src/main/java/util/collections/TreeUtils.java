@@ -3,57 +3,78 @@ package util.collections;
 import util.collections.implementations.trees.TreeNode;
 import util.collections.interfaces.tree.TreeI;
 
+import java.lang.reflect.Array;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Deque;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class TreeUtils {
 
-    public static <T> void inOrderTraversal(TreeI<T> tree) {
-        inOrderTraversal(tree.getRoot());
+    //later I'll replace the list with my dymanic array
+    //list should guarantee the order
+    //need some OrderedList
+    public static <T> void printInOrderTraversal(TreeI<T> tree) {
+        ArrayList<T> tList = new ArrayList<>();
+        inOrderTraversal(tree.getRoot(), tList);
+        List<String> nodes = tList.stream().map(o -> o.toString()).collect(Collectors.toList());
+        System.out.println(String.join(" ", nodes));
     }
 
-    public static <T> void inOrderTraversal(TreeNode<T> root) {
+    public static <T> T[] inOrderTraversalToArray(TreeI<T> tree, Class tClass) {
+        ArrayList<T> tList = new ArrayList<>();
+        inOrderTraversal(tree.getRoot(), tList);
+        T[] arr = (T[]) Array.newInstance(tClass, tList.size());
+        return tList.toArray(arr);
+    }
+
+    public static <T> void inOrderTraversal(TreeNode<T> root, ArrayList<T> tList) {
         if (root == null)
             return;
 
-        inOrderTraversal(root.left);
+        inOrderTraversal(root.left, tList);
 
-        System.out.println(root.key);
+        tList.add(root.key);
 
-        inOrderTraversal(root.right);
+        inOrderTraversal(root.right, tList);
     }
 
-    public static <T> void preOrderTraversal(TreeI<T> tree) {
-       preOrderTraversal(tree.getRoot());
+    public static <T> void printPreOrderTraversal(TreeI<T> tree) {
+        ArrayList<T> tList = new ArrayList<>();
+        preOrderTraversal(tree.getRoot(), tList);
+        List<String> nodes = tList.stream().map(o -> o.toString()).collect(Collectors.toList());
+        System.out.println(String.join(" ", nodes));
     }
 
-    public static <T> void preOrderTraversal(TreeNode<T> root) {
+    public static <T> void preOrderTraversal(TreeNode<T> root, ArrayList<T> tList) {
         if (root == null)
             return;
 
-        System.out.println(root.key);
+        tList.add(root.key);
 
-        preOrderTraversal(root.left);
+        preOrderTraversal(root.left, tList);
 
-        preOrderTraversal(root.right);
+        preOrderTraversal(root.right, tList);
     }
 
-    public static <T> void postOrderTraversal(TreeI<T> tree) {
-        preOrderTraversal(tree.getRoot());
+    public static <T> void printPostOrderTraversal(TreeI<T> tree) {
+        ArrayList<T> tList = new ArrayList<>();
+        postOrderTraversal(tree.getRoot(), tList);
+        List<String> nodes = tList.stream().map(o -> o.toString()).collect(Collectors.toList());
+        System.out.println(String.join(" ", nodes));
     }
 
 
-    public static <T> void postOrderTraversal(TreeNode<T> root) {
+    public static <T> void postOrderTraversal(TreeNode<T> root, ArrayList<T> tList) {
         if (root == null)
             return;
 
-        System.out.println(root.key);
+        postOrderTraversal(root.left, tList);
 
-        postOrderTraversal(root.left);
+        postOrderTraversal(root.right, tList);
 
-        postOrderTraversal(root.right);
+        tList.add(root.key);
     }
 
     public static <T> List<List<T>> levelOrder(TreeNode<T> root) {
