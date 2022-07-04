@@ -38,8 +38,8 @@ class BinaryTreeTest {
         TreeUtils.printInOrderTraversal(tree);
         TreeNode search13 = tree.search(13);
         Assertions.assertNull(search13);
-        TreeNode search4 = tree.search(4);
+        TreeNode search4 = tree.search(8);
         Assertions.assertNotNull(search4);
-        Assertions.assertEquals(4, search4.key);
+        Assertions.assertEquals(8, search4.key);
     }
 }
