@@ -4,8 +4,11 @@ import util.collections.interfaces.tree.TreeI;
 
 public class BinarySearchTree<T> implements TreeI<T> {
 
-    TreeNode<T> root;
+    private TreeNode<T> root;
 
+    /*
+    * O(h) time complexity
+    * */
     @Override
     public TreeNode<T> search(T key) {
         TreeNode node = root;
@@ -19,6 +22,9 @@ public class BinarySearchTree<T> implements TreeI<T> {
         return node;
     }
 
+    /*
+    * O(h) time complexity
+    * */
     @Override
     public void add(T key) {
         add(root, key);
@@ -38,9 +44,12 @@ public class BinarySearchTree<T> implements TreeI<T> {
         return node;
     }
 
+    /*
+    * Also looks like being O(h)
+    * */
     @Override
     public void remove(T key) {
-
+        remove(root, key);
     }
 
     public TreeNode remove(TreeNode node, T key) {
@@ -70,6 +79,6 @@ public class BinarySearchTree<T> implements TreeI<T> {
 
     @Override
     public TreeNode<T> getRoot() {
-        return null;
+        return root;
     }
 }

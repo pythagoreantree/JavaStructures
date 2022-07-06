@@ -18,6 +18,9 @@ public class BinaryTree<T> implements TreeI<T> {
             throw new RuntimeException("Tree is already constructed.");
     }
 
+    /*
+    * O(n) time complexity
+    * */
     @Override
     public TreeNode search(T key) {
         return search(root, key);
@@ -40,6 +43,10 @@ public class BinaryTree<T> implements TreeI<T> {
         return null;
     }
 
+
+    /*
+    * O(n) time complexity
+    * */
     @Override
     public void add(T key) {
         if (root == null) {
@@ -67,6 +74,9 @@ public class BinaryTree<T> implements TreeI<T> {
         }
     }
 
+    /*
+    * O(n) time complexity
+    * */
     @Override
     public void remove(T key) {
         //here may be also if key == null then exception
