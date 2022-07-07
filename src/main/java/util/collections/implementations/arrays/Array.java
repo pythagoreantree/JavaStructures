@@ -28,18 +28,18 @@ public class Array<T> implements ArrayI<T> {
 
     public Array(Class<T> eClass) {
         this.eClass = eClass;
-        this.data = (T[]) java.lang.reflect.Array.newInstance(eClass, DEFAULT_CAPACITY);
+        this.data = getArrayData(eClass, DEFAULT_CAPACITY);
         this.capacity = data.length;
     }
 
     public Array(Class<T> eClass, int initialCapacity) {
         if (initialCapacity > 0) {
             this.eClass = eClass;
-            this.data = (T[]) java.lang.reflect.Array.newInstance(eClass, initialCapacity);
+            this.data = getArrayData(eClass, initialCapacity);
             this.capacity = initialCapacity;
         } else if (initialCapacity == 0) {
             this.eClass = eClass;
-            this.data = (T[]) java.lang.reflect.Array.newInstance(eClass, DEFAULT_CAPACITY);
+            this.data = getArrayData(eClass, DEFAULT_CAPACITY);
             this.capacity = DEFAULT_CAPACITY;
         } else {
             throw new IllegalArgumentException("Illegal Capacity: " + initialCapacity);
@@ -61,11 +61,15 @@ public class Array<T> implements ArrayI<T> {
         this.eClass = eClass;
         if (eClass != null){
             this.eClass = eClass;
-            this.data = (T[]) java.lang.reflect.Array.newInstance(eClass, collection.capacity());
+            this.data = getArrayData(eClass, collection.capacity());
             this.capacity = collection.capacity();
         } else {
             throw new RuntimeException("Cant define the class of elements");
         }
+    }
+
+    private T[] getArrayData(Class eClass, int length){
+        return (T[]) java.lang.reflect.Array.newInstance(eClass, length);
     }
 
     private int size = 0;
@@ -99,9 +103,9 @@ public class Array<T> implements ArrayI<T> {
     @Override
     public T[] getArray() {
         if (isEmpty()) {
-            return (T[]) java.lang.reflect.Array.newInstance(eClass, 0);
+            return getArrayData(eClass, 0);
         }
-        T[] elems = (T[]) java.lang.reflect.Array.newInstance(eClass, size);
+        T[] elems = getArrayData(eClass, size);
         for (int i = 0; i < size; i++) {
             elems[i] = data[i];
         }
@@ -111,7 +115,7 @@ public class Array<T> implements ArrayI<T> {
     @Override
     public T[] getArray(int length) {
         if (length == 0) {
-            return (T[]) java.lang.reflect.Array.newInstance(eClass, 0);
+            return getArrayData(eClass, 0);
         }
         if (length >= size()) {
             return getArray();
@@ -121,7 +125,7 @@ public class Array<T> implements ArrayI<T> {
 
     protected Array clone() {
         Array<T> dataClone = new Array(eClass, capacity);
-        T[] elements = (T[]) java.lang.reflect.Array.newInstance(eClass, capacity);
+        T[] elements = getArrayData(eClass, capacity);
         for (int i = 0; i < size; i++) {
             elements[i] = data[i];
         }
@@ -135,7 +139,7 @@ public class Array<T> implements ArrayI<T> {
     }
 
     private T[] copyArray(int arrLength, int fillLength) {
-        T[] copy = (T[]) java.lang.reflect.Array.newInstance(eClass, fillLength);
+        T[] copy = getArrayData(eClass, fillLength);
         for (int i = 0; i < arrLength; i++) {
             copy[i] = data[i];
         }
