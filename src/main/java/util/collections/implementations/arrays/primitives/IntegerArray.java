@@ -102,13 +102,23 @@ public class IntegerArray implements ArrayI<Integer> {
     }
 
     @Override
-    public void remove(int index) {
-        requireNonNull(array).remove(index);
+    public void removeAtIndex(int index) {
+        requireNonNull(array).removeAtIndex(index);
     }
 
     @Override
     public void remove(Integer val) {
         requireNonNull(array).remove(val);
+    }
+
+    @Override
+    public void removeFirst(Integer val) {
+        requireNonNull(array).removeFirst(val);
+    }
+
+    @Override
+    public void removeLast(Integer val) {
+        requireNonNull(array).removeLast(val);
     }
 
     @Override

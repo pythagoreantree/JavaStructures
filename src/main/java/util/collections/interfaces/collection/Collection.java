@@ -23,9 +23,13 @@ public interface Collection<T> extends Container, Jiterable<T> {
 
     void set(T e, int index);
 
-    void remove(int index);
+    void removeAtIndex(int index);
 
     void remove(T e);
+
+    void removeFirst(T e);
+
+    void removeLast(T e);
 
     void removeAllOccurences(T e);
 

@@ -94,9 +94,9 @@ public class SecureArray<T> implements Collection<T> {
     }
 
     @Override
-    public void remove(int index) {
+    public void removeAtIndex(int index) {
         if(access == ArrayAccess.WRITE){
-            requireNonNull(array).remove(index);
+            requireNonNull(array).removeAtIndex(index);
         } else {
             throw new RuntimeException("Permission denied.");
         }
@@ -106,6 +106,24 @@ public class SecureArray<T> implements Collection<T> {
     public void remove(T e) {
         if(access == ArrayAccess.WRITE){
             requireNonNull(array).remove(e);
+        } else {
+            throw new RuntimeException("Permission denied.");
+        }
+    }
+
+    @Override
+    public void removeFirst(T e) {
+        if(access == ArrayAccess.WRITE){
+            requireNonNull(array).removeFirst(e);
+        } else {
+            throw new RuntimeException("Permission denied.");
+        }
+    }
+
+    @Override
+    public void removeLast(T e) {
+        if(access == ArrayAccess.WRITE){
+            requireNonNull(array).removeLast(e);
         } else {
             throw new RuntimeException("Permission denied.");
         }

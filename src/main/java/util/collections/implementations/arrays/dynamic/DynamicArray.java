@@ -265,6 +265,17 @@ public class DynamicArray<E> implements ArrayI<E> {
         }
     }
 
+    @Override
+    public void removeFirst(E e) {
+
+
+    }
+
+    @Override
+    public void removeLast(E e) {
+
+    }
+
     private void removeByIndex(int index) {
         int lastIndex = size - 1;
         for (int i = index; i < lastIndex; i++) {
@@ -288,7 +299,7 @@ public class DynamicArray<E> implements ArrayI<E> {
     }
 
     @Override
-    public void remove(int index) {
+    public void removeAtIndex(int index) {
         if (index < 0 || index >= size)
             throw new IndexOutOfBoundsException("Index: " + index + ", Size: " + size);
         removeByIndex(index);
@@ -350,6 +361,11 @@ public class DynamicArray<E> implements ArrayI<E> {
 
     @Override
     public void addAll(Collection<E> c) {
+    }
+
+    @Override
+    public void replaceAll(Collection<E> c) {
+
     }
 
     @Override

@@ -107,8 +107,8 @@ public class LongArray implements ArrayI<Long> {
     }
 
     @Override
-    public void remove(int index) {
-        requireNonNull(array).remove(index);
+    public void removeAtIndex(int index) {
+        requireNonNull(array).removeAtIndex(index);
     }
 
     @Override
@@ -117,8 +117,18 @@ public class LongArray implements ArrayI<Long> {
     }
 
     @Override
+    public void removeFirst(Long e) {
+        requireNonNull(array).removeFirst(e);
+    }
+
+    @Override
+    public void removeLast(Long e) {
+        requireNonNull(array).removeLast(e);
+    }
+
+    @Override
     public void removeAllOccurences(Long e) {
-        requireNonNull(array).remove(e);
+        requireNonNull(array).removeAllOccurences(e);
     }
 
     @Override

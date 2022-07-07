@@ -1,9 +1,7 @@
 package util.collections.implementations.arrays;
 
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import java.util.Collection;
-
-import java.util.ArrayList;
 
 class ArrayTest {
 
@@ -24,24 +22,38 @@ class ArrayTest {
     }
 
     @Test
-    void createArrayV2(){
-//        Array<Integer> arr = new Array<Integer>(Integer.class, 100);
-//        System.out.println(arr.clone());
-//        arr.add(null);
-//        arr.add(null);
-//        arr.add(1);
-//        System.out.println(arr.data.getClass());
-//        System.out.println(arr.data.getClass());
-//        System.out.println(Arrays.stream(arr.data).filter(o -> o != null).map(o -> o.toString()).collect(Collectors.toList()));
-//        ArrayList<Integer> al = new ArrayList<>();
-//        al.add(1);
-//        Array<Integer> arr = new Array<Integer>(al);
-//        System.out.println(al);
-//        System.out.println(al.toArray().getClass());
-//        al.add(1);
-//        System.out.println(al.toArray().getClass());
-//        System.out.println(al.get(0).getClass());
-//        System.out.println(al.toArray().getClass());
+    void createIntegerArray(){
+        Array<Integer> arr = new Array<>(Integer.class);
+        Assertions.assertEquals(16, arr.capacity());
+        arr = new Array<>(Integer.class, 10);
+        Assertions.assertEquals(10, arr.capacity());
+        Assertions.assertTrue(arr.isEmpty());
+        arr.add(null);
+        arr.add(null);
+        arr.add(null);
+        Assertions.assertEquals(3, arr.size());
+        Assertions.assertFalse(arr.isEmpty());
+        System.out.println(arr.toString());
+        Array<Integer> arr2 = new Array<>(Integer.class, 7);
+        arr2.add(1);
+        arr2.add(2);
+        arr2.add(3);
+        arr2.add(4);
+        arr2.add(3);
+        arr2.add(5);
+        arr2.add(3);
+//        arr2.set(6, 6);
+//        arr2.removeAtIndex(5);
+        System.out.println(arr2.toString());
+        arr.addAll(arr2);
+        System.out.println(arr.toString());
+        System.out.println(arr.size());
+        Array<Integer> arr3 = new Array<>(Integer.class, 1);
+        arr3.add(3);
+        System.out.println(arr3.toString());
+        arr.removeAll(arr3);
+        System.out.println(arr.toString());
+        //removeAll is not right. should remove only one 3
     }
 
     @Test

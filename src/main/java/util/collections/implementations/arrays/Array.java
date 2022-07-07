@@ -196,7 +196,7 @@ public class Array<T> implements ArrayI<T> {
     }
 
     @Override
-    public void remove(int index) {
+    public void removeAtIndex(int index) {
         if (index < 0 || index >= capacity)
             throw new IndexOutOfBoundsException("Index: " + index + ", Size: " + capacity);
         removeByIndex(index);
@@ -217,6 +217,18 @@ public class Array<T> implements ArrayI<T> {
                 break;
             }
         }
+    }
+
+    @Override
+    public void removeFirst(T e) {
+        int index = indexOf(e);
+        removeAtIndex(index);
+    }
+
+    @Override
+    public void removeLast(T e) {
+        int index = lastIndexOf(e);
+        removeAtIndex(index);
     }
 
     @Override
@@ -286,14 +298,15 @@ public class Array<T> implements ArrayI<T> {
     @Override
     public void addAll(Collection<T> collection) {
         Objects.requireNonNull(collection);
-        int freeSpace = capacity - size;
+        int freeSpace = capacity() - size();
         if (collection.size() > freeSpace){
             throw new RuntimeException("Cannot add all elements, no free space.");
         }
         int j = 0;
         for (int i = size; i < size + collection.size(); i++){
-            data[size++] = collection.get(j++);
+            data[i] = collection.get(j++);
         }
+        size += collection.size();
     }
 
     @Override
@@ -354,4 +367,18 @@ public class Array<T> implements ArrayI<T> {
         return null;
     }
 
+    @Override
+    public String toString(){
+        if (data == null)
+            return "";
+        if (isEmpty())
+            return "[]";
+        StringBuilder sb = new StringBuilder();
+        sb.append("[ ");
+        for (T element: data) {
+            sb.append(element).append(" ");
+        }
+        sb.append("]");
+        return sb.toString();
+    }
 }

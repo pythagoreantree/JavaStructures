@@ -86,12 +86,22 @@ public class ObjectArray<T> implements ArrayI<T> {
     }
 
     @Override
-    public void remove(int index) {
+    public void removeAtIndex(int index) {
 
     }
 
     @Override
     public void remove(T e) {
+
+    }
+
+    @Override
+    public void removeFirst(T e) {
+
+    }
+
+    @Override
+    public void removeLast(T e) {
 
     }
 
@@ -107,6 +117,11 @@ public class ObjectArray<T> implements ArrayI<T> {
 
     @Override
     public void addAll(Collection<T> c) {
+
+    }
+
+    @Override
+    public void replaceAll(Collection<T> c) {
 
     }
 
