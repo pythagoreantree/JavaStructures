@@ -35,6 +35,8 @@ public interface Collection<T> extends Container, Jiterable<T> {
 
     void addAll(Collection<T> c);
 
+    void replaceAll(Collection<T> c);
+
     void replaceAll(Collection<T> c, int startIndexThis, int startIndexCol, int length);
 
     void removeAll(Collection<T> c);

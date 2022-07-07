@@ -132,6 +132,11 @@ public class LongArray implements ArrayI<Long> {
     }
 
     @Override
+    public void replaceAll(Collection<Long> collection) {
+        requireNonNull(array).replaceAll(collection);
+    }
+
+    @Override
     public void replaceAll(Collection<Long> collection, int startIndexThis, int startIndexCol, int length) {
         requireNonNull(array).replaceAll(collection, startIndexThis, startIndexCol, length);
     }

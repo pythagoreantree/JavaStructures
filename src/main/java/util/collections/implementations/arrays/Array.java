@@ -293,6 +293,11 @@ public class Array<T> implements ArrayI<T> {
     }
 
     @Override
+    public void replaceAll(Collection<T> collection) {
+        replaceAll(collection, 0, 0, collection.size());
+    }
+
+    @Override
     public void replaceAll(Collection<T> collection, int startIndexThis, int startIndexCol, int length) {
         Objects.requireNonNull(collection);
         T[] colArray = collection.getArray();

@@ -3,10 +3,13 @@ package util.collections.implementations.arrays.primitives;
 import util.collections.Jiterator;
 import util.collections.implementations.arrays.Array;
 import util.collections.interfaces.collection.Collection;
+import util.collections.interfaces.collection.array.ArrayI;
 
 import java.util.Iterator;
 
-public class IntegerArray {
+public class IntegerArray implements ArrayI<Integer> {
+
+    private static final int DEFAULT_CAPACITY = 32;
 
     private Array<Integer> array;
 
@@ -19,21 +22,36 @@ public class IntegerArray {
     }
 
     public IntegerArray(int[] integerArray) {
-        array = new Array<>(Integer.class, integerArray.length);
-        for (int i = 0; i < integerArray.length; i++) {
-            array.add(Integer.valueOf(integerArray[i]), i);
-        }
+        if (integerArray == null)
+            integerArray = new int[DEFAULT_CAPACITY];
+        Integer[] arrayI = new Integer[integerArray.length];
+        for (int i = 0; i < integerArray.length; i++)
+            arrayI[i] = integerArray[i];
+        initArray(arrayI);
     }
 
     public IntegerArray(Integer[] integerArray) {
-        array = new Array<>(Integer.class, integerArray.length);
-        for (int i = 0; i < integerArray.length; i++) {
-            array.add(integerArray[i], i);
-        }
+        initArray(integerArray);
+    }
+
+    private void initArray(Integer[] integerArray){
+        this.array = new Array<>(Integer.class, integerArray.length);
+        this.array.setData(integerArray);
+    }
+
+    private Array<Integer> requireNonNull(Array<Integer> array){
+        if (array == null)
+            throw new NullPointerException("IntegerArray pointer is null.");
+        return array;
     }
 
     public int size() {
         return array != null? array.size(): 0;
+    }
+
+    @Override
+    public int capacity() {
+        return array != null? array.capacity(): 0;
     }
 
     public boolean isEmpty() {
@@ -41,84 +59,106 @@ public class IntegerArray {
     }
 
     public void clear() {
-        array.clear();
+        requireNonNull(array).clear();
     }
 
     public Array<Integer> getIntegers() {
         return array;
     }
 
-    public Object[] getArray() {
-        return array.getArray();
+    @Override
+    public Integer[] getArray() {
+        return requireNonNull(array).getArray();
     }
 
-    public Object[] getArray(int length) {
-        return array.getArray(length);
+    @Override
+    public Integer[] getArray(int length) {
+        return requireNonNull(array).getArray(length);
     }
 
-
-    public boolean contains(int val) {
-        return array.contains(Integer.valueOf(val));
+    @Override
+    public boolean contains(Integer val) {
+        return requireNonNull(array).contains(val);
     }
 
+    @Override
     public Integer get(int index) {
-        return array.get(index);
+        return requireNonNull(array).get(index);
     }
 
-    /*
-     * I should add my own exceptions for an array
-     * */
-    public void add(int val, int index) {
-        array.add(Integer.valueOf(val), index);
+    @Override
+    public void add(Integer val, int index) {
+        requireNonNull(array).add(val, index);
     }
 
-    public void add(int val) {
-        array.add(Integer.valueOf(val));
+    @Override
+    public void add(Integer val) {
+        requireNonNull(array).add(Integer.valueOf(val));
     }
 
-    public void set(int val, int index) {
-        array.set(Integer.valueOf(val), index);
+    @Override
+    public void set(Integer val, int index) {
+        requireNonNull(array).set(val, index);
     }
 
-    public void removeAtIndex(int index) {
-        array.remove(index);
+    @Override
+    public void remove(int index) {
+        requireNonNull(array).remove(index);
     }
 
-    public void remove(int val) {
-        array.remove(Integer.valueOf(val));
+    @Override
+    public void remove(Integer val) {
+        requireNonNull(array).remove(val);
     }
 
-    public void removeAllOccurences(int val) {
-        array.removeAllOccurences(Integer.valueOf(val));
+    @Override
+    public void removeAllOccurences(Integer val) {
+        requireNonNull(array).removeAllOccurences(val);
     }
 
-    public int indexOf(int val) {
-        return array.indexOf(Integer.valueOf(val));
+    @Override
+    public int indexOf(Integer val) {
+        return requireNonNull(array).indexOf(val);
     }
 
-    public int lastIndexOf(int val) {
-        return array.lastIndexOf(Integer.valueOf(val));
+    @Override
+    public int lastIndexOf(Integer val) {
+        return requireNonNull(array).lastIndexOf(val);
     }
 
-    //Need a method with an array
-    public void containsAll(Collection<Integer> iArray) {
-        array.containsAll(iArray);
+    @Override
+    public ArrayI<Integer> subArray(int fromIndex, int toIndex) {
+        return requireNonNull(array).subArray(fromIndex, toIndex);
     }
 
-    public void addAll(Collection<Integer> iArray) {
-       array.addAll(iArray);
+    @Override
+    public boolean containsAll(Collection<Integer> collection) {
+        return requireNonNull(array).containsAll(collection);
     }
 
-    public void replaceAll(Collection<Integer> iArray, int startIndexThis, int startIndexCol, int length) {
-        array.replaceAll(iArray, startIndexThis, startIndexCol, length);
+    @Override
+    public void addAll(Collection<Integer> collection) {
+       requireNonNull(array).addAll(collection);
     }
 
-    public void removeAll(Collection<Integer> iArray) {
-        array.removeAll(iArray);
+    @Override
+    public void replaceAll(Collection<Integer> collection) {
+        requireNonNull(array).replaceAll(collection);
     }
 
-    public void retainAll(Collection<Integer> iArray) {
-        array.retainAll(iArray);
+    @Override
+    public void replaceAll(Collection<Integer> collection, int startIndexThis, int startIndexCol, int length) {
+        requireNonNull(array).replaceAll(collection, startIndexThis, startIndexCol, length);
+    }
+
+    @Override
+    public void removeAll(Collection<Integer> collection) {
+        requireNonNull(array).removeAll(collection);
+    }
+
+    @Override
+    public void retainAll(Collection<Integer> collection) {
+        requireNonNull(array).retainAll(collection);
     }
 
     public Jiterator jiterator() {

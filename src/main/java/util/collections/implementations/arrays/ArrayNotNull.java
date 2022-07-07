@@ -101,6 +101,13 @@ public class ArrayNotNull<T> extends Array<T> {
     }
 
     @Override
+    public void replaceAll(Collection<T> collection) {
+        Objects.requireNonNull(collection);
+        collection.removeAllOccurences(null);
+        super.replaceAll(collection);
+    }
+
+    @Override
     public void replaceAll(Collection<T> collection, int startIndexThis, int startIndexCol, int length) {
         Objects.requireNonNull(collection);
         collection.removeAllOccurences(null);

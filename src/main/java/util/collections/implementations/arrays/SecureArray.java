@@ -130,6 +130,15 @@ public class SecureArray<T> implements Collection<T> {
     }
 
     @Override
+    public void replaceAll(Collection<T> c) {
+        if(access == ArrayAccess.WRITE){
+            requireNonNull(array).replaceAll(c);
+        } else {
+            throw new RuntimeException("Permission denied.");
+        }
+    }
+
+    @Override
     public void replaceAll(Collection c, int startIndexThis, int startIndexCol, int length) {
         if(access == ArrayAccess.WRITE){
             requireNonNull(array).replaceAll(c, startIndexThis, startIndexCol, length);
