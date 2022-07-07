@@ -2,113 +2,148 @@ package util.collections.implementations.arrays.primitives;
 
 import util.collections.Jiterator;
 import util.collections.implementations.arrays.Array;
+import util.collections.interfaces.collection.Collection;
+import util.collections.interfaces.collection.array.ArrayI;
 
 import java.util.Iterator;
 
-public class LongArray {
+public class LongArray implements ArrayI<Long> {
 
-    private Array<Long> data;
+    private Array<Long> array;
 
     public LongArray() {
-        this.data = new Array<>();
+        this.array = new Array<>(Long.class);
     }
 
     public LongArray(int initialCapacity) {
-        this.data = new Array<>(initialCapacity);
+        this.array = new Array<>(Long.class, initialCapacity);
     }
 
     public LongArray(long[] longArray) {
-        data = new Array<>(longArray.length);
+        array = new Array<>(Long.class, longArray.length);
         for (int i = 0; i < longArray.length; i++) {
-            data.add(Long.valueOf(longArray[i]), i);
+            array.add(Long.valueOf(longArray[i]), i);
         }
     }
 
+    public LongArray(Long[] longArray) {
+        array = new Array<>(Long.class, longArray.length);
+        for (int i = 0; i < longArray.length; i++) {
+            array.add(longArray[i], i);
+        }
+    }
+
+    private Array<Long> requireNonNull(Array<Long> array){
+        if (array == null)
+            throw new NullPointerException("LongArray pointer is null.");
+        return array;
+    }
+
     public int size() {
-        return data != null? data.size(): 0;
+        return array != null? array.size(): 0;
     }
 
     public boolean isEmpty() {
         return size() == 0;
     }
 
+    @Override
+    public int capacity() {
+        return array != null? array.capacity(): 0;
+    }
+
     public void clear() {
-        data.clear();
+        requireNonNull(array).clear();
     }
 
-    public Array<Long> getLongs() {
-        return data;
+    public Long[] getArray() {
+        return requireNonNull(array).getArray();
     }
 
-    public Object[] getArray() {
-        return (Long[]) data.getArray();
+    public Long[] getArray(int length) {
+        return requireNonNull(array).getArray(length);
     }
 
-    public Object[] getArray(int length) {
-        return data.getArray(length);
-    }
-
-    public boolean contains(long val) {
-        return data.contains(Long.valueOf(val));
+    @Override
+    public boolean contains(Long l) {
+        return requireNonNull(array).contains(l);
     }
 
     public Long get(int index) {
-        return data.get(index);
+        return requireNonNull(array).get(index);
     }
 
-    /*
-     * I should add my own exceptions for an array
-     * */
-    public void add(long val, int index) {
-        data.add(Long.valueOf(val), index);
+    public Array<Long> getLongs() {
+        return array;
     }
 
-    public void add(long val) {
-        data.add(Long.valueOf(val));
+    @Override
+    public void add(Long e, int index) {
+        requireNonNull(array).add(e, index);
     }
 
-    public void set(long val, int index) {
-        data.set(Long.valueOf(val), index);
+    @Override
+    public void add(Long e) {
+        requireNonNull(array).add(e);
     }
 
-    public void removeAtIndex(int index) {
-        data.remove(index);
+    @Override
+    public void set(Long e, int index) {
+        requireNonNull(array).set(e, index);
     }
 
-    public void remove(long val) {
-        data.remove(Long.valueOf(val));
+    @Override
+    public int indexOf(Long val) {
+        return requireNonNull(array).indexOf(val);
     }
 
-    public void removeAllOccurences(long val) {
-        data.removeAllOccurences(Long.valueOf(val));
+    public int lastIndexOf(Long val) {
+        return requireNonNull(array).lastIndexOf(val);
     }
 
-    public int indexOf(long val) {
-        return data.indexOf(Long.valueOf(val));
+    @Override
+    public ArrayI<Long> subArray(int fromIndex, int toIndex) {
+        return requireNonNull(array).subArray(fromIndex, toIndex);
     }
 
-    public int lastIndexOf(long val) {
-        return data.lastIndexOf(Long.valueOf(val));
+    @Override
+    public void remove(int index) {
+        requireNonNull(array).remove(index);
     }
 
-    public boolean containsAll(long[] lArray) {
-        return false;
+    @Override
+    public void remove(Long e) {
+        requireNonNull(array).remove(e);
     }
 
-    public boolean addAll(long[] lArray) {
-        return false;
+    @Override
+    public void removeAllOccurences(Long e) {
+        requireNonNull(array).remove(e);
     }
 
-    public boolean replaceAll(long[] lArray, int startIndexThis, int startIndexCol, int length) {
-        return false;
+    @Override
+    public boolean containsAll(Collection<Long> collection) {
+        return requireNonNull(array).containsAll(collection);
     }
 
-    public boolean removeAll(long[] lArray) {
-        return false;
+    @Override
+    public void addAll(Collection<Long> collection) {
+        requireNonNull(array).addAll(collection);
     }
 
-    public boolean retainAll(long[] lArray) {
-        return false;
+    @Override
+    public void replaceAll(Collection<Long> collection, int startIndexThis, int startIndexCol, int length) {
+        requireNonNull(array).replaceAll(collection, startIndexThis, startIndexCol, length);
+    }
+
+    @Override
+    public void removeAll(Collection<Long> collection) {
+        requireNonNull(array).removeAll(collection);
+    }
+
+    @Override
+    public void retainAll(Collection<Long> collection) {
+        requireNonNull(array).retainAll(collection);
     }
 
     public Jiterator jiterator() {

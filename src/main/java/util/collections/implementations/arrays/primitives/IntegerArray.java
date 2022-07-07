@@ -8,25 +8,32 @@ import java.util.Iterator;
 
 public class IntegerArray {
 
-    private Array<Integer> data;
+    private Array<Integer> array;
 
     public IntegerArray() {
-        this.data = new Array<>();
+        this.array = new Array<>(Integer.class);
     }
 
     public IntegerArray(int initialCapacity) {
-        this.data = new Array<>(initialCapacity);
+        this.array = new Array<>(Integer.class, initialCapacity);
     }
 
     public IntegerArray(int[] integerArray) {
-        data = new Array<>(integerArray.length);
+        array = new Array<>(Integer.class, integerArray.length);
         for (int i = 0; i < integerArray.length; i++) {
-            data.add(Integer.valueOf(integerArray[i]), i);
+            array.add(Integer.valueOf(integerArray[i]), i);
+        }
+    }
+
+    public IntegerArray(Integer[] integerArray) {
+        array = new Array<>(Integer.class, integerArray.length);
+        for (int i = 0; i < integerArray.length; i++) {
+            array.add(integerArray[i], i);
         }
     }
 
     public int size() {
-        return data != null? data.size(): 0;
+        return array != null? array.size(): 0;
     }
 
     public boolean isEmpty() {
@@ -34,84 +41,84 @@ public class IntegerArray {
     }
 
     public void clear() {
-        data.clear();
+        array.clear();
     }
 
     public Array<Integer> getIntegers() {
-        return data;
+        return array;
     }
 
     public Object[] getArray() {
-        return data.getArray();
+        return array.getArray();
     }
 
     public Object[] getArray(int length) {
-        return data.getArray(length);
+        return array.getArray(length);
     }
 
 
     public boolean contains(int val) {
-        return data.contains(Integer.valueOf(val));
+        return array.contains(Integer.valueOf(val));
     }
 
     public Integer get(int index) {
-        return data.get(index);
+        return array.get(index);
     }
 
     /*
      * I should add my own exceptions for an array
      * */
     public void add(int val, int index) {
-        data.add(Integer.valueOf(val), index);
+        array.add(Integer.valueOf(val), index);
     }
 
     public void add(int val) {
-        data.add(Integer.valueOf(val));
+        array.add(Integer.valueOf(val));
     }
 
     public void set(int val, int index) {
-        data.set(Integer.valueOf(val), index);
+        array.set(Integer.valueOf(val), index);
     }
 
     public void removeAtIndex(int index) {
-        data.remove(index);
+        array.remove(index);
     }
 
     public void remove(int val) {
-        data.remove(Integer.valueOf(val));
+        array.remove(Integer.valueOf(val));
     }
 
     public void removeAllOccurences(int val) {
-        data.removeAllOccurences(Integer.valueOf(val));
+        array.removeAllOccurences(Integer.valueOf(val));
     }
 
     public int indexOf(int val) {
-        return data.indexOf(Integer.valueOf(val));
+        return array.indexOf(Integer.valueOf(val));
     }
 
     public int lastIndexOf(int val) {
-        return data.lastIndexOf(Integer.valueOf(val));
+        return array.lastIndexOf(Integer.valueOf(val));
     }
 
     //Need a method with an array
     public void containsAll(Collection<Integer> iArray) {
-        data.containsAll(iArray);
+        array.containsAll(iArray);
     }
 
     public void addAll(Collection<Integer> iArray) {
-       data.addAll(iArray);
+       array.addAll(iArray);
     }
 
     public void replaceAll(Collection<Integer> iArray, int startIndexThis, int startIndexCol, int length) {
-        data.replaceAll(iArray, startIndexThis, startIndexCol, length);
+        array.replaceAll(iArray, startIndexThis, startIndexCol, length);
     }
 
     public void removeAll(Collection<Integer> iArray) {
-        data.removeAll(iArray);
+        array.removeAll(iArray);
     }
 
     public void retainAll(Collection<Integer> iArray) {
-        data.retainAll(iArray);
+        array.retainAll(iArray);
     }
 
     public Jiterator jiterator() {
