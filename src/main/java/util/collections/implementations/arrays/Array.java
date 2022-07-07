@@ -337,6 +337,9 @@ public class Array<T> implements ArrayI<T> {
     @Override
     public void removeAll(Collection<T> collection) {
         Objects.requireNonNull(collection);
+        //iterate through collection and mark data elements to remove
+        //remove them
+        //what if elements are duplicated
         for (T element: data){
             if (collection.contains(element))
                 remove(element);

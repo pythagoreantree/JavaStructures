@@ -93,7 +93,7 @@ public class IntegerArray implements ArrayI<Integer> {
 
     @Override
     public void add(Integer val) {
-        requireNonNull(array).add(Integer.valueOf(val));
+        requireNonNull(array).add(val);
     }
 
     @Override
@@ -181,6 +181,21 @@ public class IntegerArray implements ArrayI<Integer> {
 
     public Iterator iterator() {
         return null;
+    }
+
+    @Override
+    public String toString(){
+        if (array == null)
+            return "";
+        if (isEmpty())
+            return "[]";
+        StringBuilder sb = new StringBuilder();
+        sb.append("[ ");
+        for (int i = 0; i < size(); i++) {
+            sb.append(array.get(i)).append(" ");
+        }
+        sb.append("]");
+        return sb.toString();
     }
 
 }

@@ -2,6 +2,7 @@ package util.collections.implementations.arrays;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import util.collections.implementations.arrays.primitives.IntegerArray;
 
 class ArrayTest {
 
@@ -54,6 +55,35 @@ class ArrayTest {
         arr.removeAll(arr3);
         System.out.println(arr.toString());
         //removeAll is not right. should remove only one 3
+    }
+
+    @Test
+    void createPrimitiveIntegerArray(){
+        IntegerArray arr = new IntegerArray();
+        System.out.println(arr.size());
+        System.out.println(arr.capacity());
+        arr = new IntegerArray(10);
+        System.out.println(arr.size());
+        System.out.println(arr.capacity());
+        System.out.println(arr.isEmpty());
+        arr.add(1);
+        arr.add(2);
+        arr.add(3);
+        System.out.println(arr.toString());
+        arr.remove(3);
+        System.out.println(arr.size());
+        System.out.println(arr.toString());
+        arr.set(0, 0);
+        System.out.println(arr.toString());
+        arr.add(null);
+        System.out.println(arr.size());
+        System.out.println(arr.toString());
+        arr.remove(null);
+        System.out.println(arr.size());
+        System.out.println(arr.toString());
+        arr.add(1, 1);
+        System.out.println(arr.size());
+        System.out.println(arr.toString());
     }
 
     @Test
