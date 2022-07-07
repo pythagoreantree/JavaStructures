@@ -7,18 +7,33 @@ import util.collections.interfaces.collection.array.ArrayI;
 
 import java.util.Iterator;
 
-public class SecureArray<T> extends Array<T> {
+public class SecureArray<T> implements Collection<T> {
 
+    private ArrayI<T> array;
+    
     private ArrayAccess access = ArrayAccess.READ;
 
     public SecureArray(){
-        super();
+        array = new Array();
+    }
+
+    public SecureArray(Class<T> tClass){
+        array = new Array(tClass);
+    }
+    public SecureArray(Class<T> tClass, int initCapacity){
+        array = new Array(tClass, initCapacity);
+    }
+
+    private ArrayI<T> requireNonNull(ArrayI<T> array){
+        if (array == null)
+            throw new NullPointerException("SecureArray is not initialized.");
+        return array;
     }
 
     @Override
     public T[] getArray() {
         if(access != ArrayAccess.NONE){
-            return super.getArray();
+            return requireNonNull(array).getArray();
         } else {
             throw new RuntimeException("Permission denied.");
         }
@@ -27,7 +42,7 @@ public class SecureArray<T> extends Array<T> {
     @Override
     public T[] getArray(int length) {
         if(access != ArrayAccess.NONE){
-            return super.getArray(length);
+            return requireNonNull(array).getArray(length);
         } else {
             throw new RuntimeException("Permission denied.");
         }
@@ -36,7 +51,7 @@ public class SecureArray<T> extends Array<T> {
     @Override
     public boolean contains(T e) {
         if(access != ArrayAccess.NONE){
-            return super.contains(e);
+            return requireNonNull(array).contains(e);
         } else {
             throw new RuntimeException("Permission denied.");
         }
@@ -45,7 +60,7 @@ public class SecureArray<T> extends Array<T> {
     @Override
     public T get(int index) {
         if(access != ArrayAccess.NONE){
-            return super.get(index);
+            return requireNonNull(array).get(index);
         } else {
             throw new RuntimeException("Permission denied.");
         }
@@ -54,7 +69,7 @@ public class SecureArray<T> extends Array<T> {
     @Override
     public void add(T e, int index) {
         if(access == ArrayAccess.WRITE){
-            super.add(e, index);
+            requireNonNull(array).add(e, index);
         } else {
             throw new RuntimeException("Permission denied.");
         }
@@ -63,7 +78,7 @@ public class SecureArray<T> extends Array<T> {
     @Override
     public void add(T e) {
         if(access == ArrayAccess.WRITE){
-            super.add(e);
+            requireNonNull(array).add(e);
         } else {
             throw new RuntimeException("Permission denied.");
         }
@@ -72,7 +87,7 @@ public class SecureArray<T> extends Array<T> {
     @Override
     public void set(T e, int index) {
         if(access == ArrayAccess.WRITE){
-            super.set(e, index);
+            requireNonNull(array).set(e, index);
         } else {
             throw new RuntimeException("Permission denied.");
         }
@@ -81,7 +96,7 @@ public class SecureArray<T> extends Array<T> {
     @Override
     public void remove(int index) {
         if(access == ArrayAccess.WRITE){
-            super.remove(index);
+            requireNonNull(array).remove(index);
         } else {
             throw new RuntimeException("Permission denied.");
         }
@@ -90,7 +105,7 @@ public class SecureArray<T> extends Array<T> {
     @Override
     public void remove(T e) {
         if(access == ArrayAccess.WRITE){
-            super.remove(e);
+            requireNonNull(array).remove(e);
         } else {
             throw new RuntimeException("Permission denied.");
         }
@@ -99,7 +114,7 @@ public class SecureArray<T> extends Array<T> {
     @Override
     public void removeAllOccurences(T e) {
         if(access == ArrayAccess.WRITE){
-            super.removeAllOccurences(e);
+            requireNonNull(array).removeAllOccurences(e);
         } else {
             throw new RuntimeException("Permission denied.");
         }
@@ -108,7 +123,7 @@ public class SecureArray<T> extends Array<T> {
     @Override
     public void addAll(Collection c) {
         if(access == ArrayAccess.WRITE){
-            super.addAll(c);
+            requireNonNull(array).addAll(c);
         } else {
             throw new RuntimeException("Permission denied.");
         }
@@ -117,7 +132,7 @@ public class SecureArray<T> extends Array<T> {
     @Override
     public void replaceAll(Collection c, int startIndexThis, int startIndexCol, int length) {
         if(access == ArrayAccess.WRITE){
-            super.replaceAll(c, startIndexThis, startIndexCol, length);
+            requireNonNull(array).replaceAll(c, startIndexThis, startIndexCol, length);
         } else {
             throw new RuntimeException("Permission denied.");
         }
@@ -126,7 +141,7 @@ public class SecureArray<T> extends Array<T> {
     @Override
     public void retainAll(Collection c) {
         if(access == ArrayAccess.WRITE){
-            super.retainAll(c);
+            requireNonNull(array).retainAll(c);
         } else {
             throw new RuntimeException("Permission denied.");
         }
@@ -135,7 +150,7 @@ public class SecureArray<T> extends Array<T> {
     @Override
     public void removeAll(Collection c) {
         if(access == ArrayAccess.WRITE){
-            super.removeAll(c);
+            requireNonNull(array).removeAll(c);
         } else {
             throw new RuntimeException("Permission denied.");
         }
@@ -144,7 +159,7 @@ public class SecureArray<T> extends Array<T> {
     @Override
     public boolean containsAll(Collection c) {
         if(access == ArrayAccess.WRITE){
-            return super.containsAll(c);
+            return requireNonNull(array).containsAll(c);
         } else {
             throw new RuntimeException("Permission denied.");
         }
@@ -153,7 +168,7 @@ public class SecureArray<T> extends Array<T> {
     @Override
     public int size() {
         if(access != ArrayAccess.NONE){
-            return super.size();
+            return requireNonNull(array).size();
         } else {
             throw new RuntimeException("Permission denied.");
         }
@@ -161,13 +176,13 @@ public class SecureArray<T> extends Array<T> {
 
     @Override
     public int capacity() {
-        return super.capacity();
+        return requireNonNull(array).capacity();
     }
 
     @Override
     public boolean isEmpty() {
         if(access != ArrayAccess.NONE){
-            return super.isEmpty();
+            return requireNonNull(array).isEmpty();
         } else {
             throw new RuntimeException("Permission denied.");
         }
@@ -176,7 +191,7 @@ public class SecureArray<T> extends Array<T> {
     @Override
     public void clear() {
         if(access == ArrayAccess.WRITE){
-            super.clear();
+            requireNonNull(array).clear();
         } else {
             throw new RuntimeException("Permission denied.");
         }
