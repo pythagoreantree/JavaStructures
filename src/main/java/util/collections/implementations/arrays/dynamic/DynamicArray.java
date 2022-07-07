@@ -77,6 +77,11 @@ public class DynamicArray<E> implements ArrayI<E> {
     }
 
     @Override
+    public int capacity() {
+        return 0;
+    }
+
+    @Override
     public boolean isEmpty() {
         return size == 0;
     }
@@ -111,20 +116,20 @@ public class DynamicArray<E> implements ArrayI<E> {
      * Это скорее getCopy() или copy()
      * */
 //    @Override
-    public E[] toArray() {
+    public E[] getArray() {
         return (size() != 0)? copyArray(size()): getEmptyArray(this.eClass);
     }
 
 
     @Override
-    public E[] toArray(int length) {
+    public E[] getArray(int length) {
         if (length == 0) {
             return getEmptyArray(this.eClass);
         }
         if (length < size) {
             return copyArray(length);
         } else if (length == size) {
-            return toArray();
+            return getArray();
         } else {
             E[] copy = copyArray(length, size());
             //not sure if it's needed
@@ -224,7 +229,7 @@ public class DynamicArray<E> implements ArrayI<E> {
         //            this.capacity = minCapacity;
         if (this.capacity - MAX_ARRAY_SIZE > 0)
             this.capacity = hugeCapacity(minCapacity);
-        this.data = toArray(this.capacity);
+        this.data = getArray(this.capacity);
     }
 
     private static int hugeCapacity(int minCapacity) {
@@ -277,7 +282,7 @@ public class DynamicArray<E> implements ArrayI<E> {
         } else {
             if (size < Double.valueOf(capacity * HALF).intValue()) {
                 capacity = Double.valueOf(capacity * MEMORY_DECREASE_INDEX).intValue();
-                data = toArray(this.capacity);
+                data = getArray(this.capacity);
             }
         }
     }
@@ -339,28 +344,24 @@ public class DynamicArray<E> implements ArrayI<E> {
     }
 
     @Override
-    public boolean containsAll(Collection<?> c) {
+    public boolean containsAll(Collection<E> c) {
         return false;
     }
 
     @Override
-    public boolean addAll(Collection<? extends E> c) {
-        return false;
+    public void addAll(Collection<E> c) {
     }
 
     @Override
-    public boolean replaceAll(Collection<? extends E> c, int startIndexThis, int startIndexCol, int length) {
-        return false;
+    public void replaceAll(Collection<E> c, int startIndexThis, int startIndexCol, int length) {
     }
 
     @Override
-    public boolean removeAll(Collection<?> c) {
-        return false;
+    public void removeAll(Collection<E> c) {
     }
 
     @Override
-    public boolean retainAll(Collection<?> c) {
-        return false;
+    public void retainAll(Collection<E> c) {
     }
 
     @Override

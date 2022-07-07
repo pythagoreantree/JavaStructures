@@ -1,8 +1,9 @@
 package util.collections.implementations.arrays;
 
 import org.junit.jupiter.api.Test;
+import java.util.Collection;
 
-import static org.junit.jupiter.api.Assertions.*;
+import java.util.ArrayList;
 
 class ArrayTest {
 
@@ -16,10 +17,31 @@ class ArrayTest {
         for (int i = 0; i < arr.size(); i++){
             System.out.println(arr.get(i));
         }
-        Object[] intArr = arr.toArray();
+        Object[] intArr = arr.getArray();
         for (int j = 0; j < intArr.length; j++){
             System.out.println(intArr[j]);
         }
+    }
+
+    @Test
+    void createArrayV2(){
+//        Array<Integer> arr = new Array<Integer>(Integer.class, 100);
+//        System.out.println(arr.clone());
+//        arr.add(null);
+//        arr.add(null);
+//        arr.add(1);
+//        System.out.println(arr.data.getClass());
+//        System.out.println(arr.data.getClass());
+//        System.out.println(Arrays.stream(arr.data).filter(o -> o != null).map(o -> o.toString()).collect(Collectors.toList()));
+//        ArrayList<Integer> al = new ArrayList<>();
+//        al.add(1);
+//        Array<Integer> arr = new Array<Integer>(al);
+//        System.out.println(al);
+//        System.out.println(al.toArray().getClass());
+//        al.add(1);
+//        System.out.println(al.toArray().getClass());
+//        System.out.println(al.get(0).getClass());
+//        System.out.println(al.toArray().getClass());
     }
 
     @Test
@@ -80,5 +102,9 @@ class ArrayTest {
 
     @Test
     void lastIndexOf() {
+    }
+
+    @Test
+    void testSize() {
     }
 }

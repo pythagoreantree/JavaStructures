@@ -41,11 +41,11 @@ public class LongArray {
     }
 
     public Object[] getArray() {
-        return (Long[]) data.toArray();
+        return (Long[]) data.getArray();
     }
 
     public Object[] getArray(int length) {
-        return data.toArray(length);
+        return data.getArray(length);
     }
 
     public boolean contains(long val) {

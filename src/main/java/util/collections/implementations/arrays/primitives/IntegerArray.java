@@ -2,6 +2,7 @@ package util.collections.implementations.arrays.primitives;
 
 import util.collections.Jiterator;
 import util.collections.implementations.arrays.Array;
+import util.collections.interfaces.collection.Collection;
 
 import java.util.Iterator;
 
@@ -41,11 +42,11 @@ public class IntegerArray {
     }
 
     public Object[] getArray() {
-        return data.toArray();
+        return data.getArray();
     }
 
     public Object[] getArray(int length) {
-        return data.toArray(length);
+        return data.getArray(length);
     }
 
 
@@ -92,24 +93,25 @@ public class IntegerArray {
         return data.lastIndexOf(Integer.valueOf(val));
     }
 
-    public boolean containsAll(int[] iArray) {
-        return false;
+    //Need a method with an array
+    public void containsAll(Collection<Integer> iArray) {
+        data.containsAll(iArray);
     }
 
-    public boolean addAll(int[] iArray) {
-        return false;
+    public void addAll(Collection<Integer> iArray) {
+       data.addAll(iArray);
     }
 
-    public boolean replaceAll(int[] iArray, int startIndexThis, int startIndexCol, int length) {
-        return false;
+    public void replaceAll(Collection<Integer> iArray, int startIndexThis, int startIndexCol, int length) {
+        data.replaceAll(iArray, startIndexThis, startIndexCol, length);
     }
 
-    public boolean removeAll(int[] iArray) {
-        return false;
+    public void removeAll(Collection<Integer> iArray) {
+        data.removeAll(iArray);
     }
 
-    public boolean retainAll(int[] iArray) {
-        return false;
+    public void retainAll(Collection<Integer> iArray) {
+        data.retainAll(iArray);
     }
 
     public Jiterator jiterator() {

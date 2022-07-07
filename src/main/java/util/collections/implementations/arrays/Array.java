@@ -8,41 +8,64 @@ import java.util.Iterator;
 import java.util.NoSuchElementException;
 import java.util.Objects;
 
-public class Array<E> implements ArrayI<E> {
+public class Array<T> implements ArrayI<T> {
 
     private static final int DEFAULT_CAPACITY = 16;
 
     private int capacity = 0;
 
-    private ArrayItem<E>[] data;
+    private Class eClass;
 
-    private boolean allowNull = true;
+    protected T[] data;
 
     public Array() {
-        this.data = getEmptyArray();
-        this.capacity = data.length;
+        throw new RuntimeException("Cant init this way");
     }
 
     public Array(int initialCapacity) {
+        throw new RuntimeException("Cant init this way");
+    }
+
+    public Array(Class<T> eClass) {
+        this.eClass = eClass;
+        this.data = (T[]) java.lang.reflect.Array.newInstance(eClass, DEFAULT_CAPACITY);
+        this.capacity = data.length;
+    }
+
+    public Array(Class<T> eClass, int initialCapacity) {
         if (initialCapacity > 0) {
-            this.data = new ArrayItem[initialCapacity];
+            this.eClass = eClass;
+            this.data = (T[]) java.lang.reflect.Array.newInstance(eClass, initialCapacity);
             this.capacity = initialCapacity;
         } else if (initialCapacity == 0) {
-            this.data = getEmptyArray();
+            this.eClass = eClass;
+            this.data = (T[]) java.lang.reflect.Array.newInstance(eClass, DEFAULT_CAPACITY);
+            this.capacity = DEFAULT_CAPACITY;
         } else {
             throw new IllegalArgumentException("Illegal Capacity: " + initialCapacity);
         }
     }
 
-    public Array(Collection<? extends E> collection) {
+    public Array(Collection<? extends T> collection) {
         Objects.requireNonNull(collection);
-//        this.data = collection.toArray();
-//        this.capacity = data.length;
-//        this.size = collection.size();
-    }
-
-    private ArrayItem[] getEmptyArray(){
-        return new ArrayItem[DEFAULT_CAPACITY];
+        boolean allNulls = true;
+        Class eClass = null;
+        for (T elem:collection){
+            if (allNulls && elem != null) {
+                allNulls = false;
+                eClass = elem.getClass();
+            }
+        }
+        if (allNulls)
+            throw new RuntimeException("Cant init with empty collection");
+        this.eClass = eClass;
+        if (eClass != null){
+            this.eClass = eClass;
+            this.data = (T[]) java.lang.reflect.Array.newInstance(eClass, collection.capacity());
+            this.capacity = collection.capacity();
+        } else {
+            throw new RuntimeException("Cant define the class of elements");
+        }
     }
 
     private int size = 0;
@@ -57,114 +80,115 @@ public class Array<E> implements ArrayI<E> {
         return size() == 0;
     }
 
+    @Override
+    public int capacity() {
+        return capacity;
+    }
+
     /*
-    * As this is an array of fixed size I just make all cells empty
-    * */
+     * As this is an array of fixed size I just make all cells empty
+     * */
     @Override
     public void clear() {
-        for (int i=0; i<size; i++){
+        for (int i = 0; i < size; i++) {
             data[i] = null;
         }
         this.size = 0;
     }
 
-//    @Override
-    public Object[] toArray() {
-        ArrayItem<E>[] arrayItems = copyArray(size());
-        Object[] elems = new Object[arrayItems.length];
-        for (int i = 0; i < arrayItems.length; i++){
-            elems[i] = arrayItems[i].item;
+    @Override
+    public T[] getArray() {
+        if (isEmpty()) {
+            return (T[]) java.lang.reflect.Array.newInstance(eClass, 0);
+        }
+        T[] elems = (T[]) java.lang.reflect.Array.newInstance(eClass, size);
+        for (int i = 0; i < size; i++) {
+            elems[i] = data[i];
         }
         return elems;
     }
 
     @Override
-    public Object[] toArray(int length) {
-        if (length == 0){
-            return getEmptyArray();
+    public T[] getArray(int length) {
+        if (length == 0) {
+            return (T[]) java.lang.reflect.Array.newInstance(eClass, 0);
         }
-        if (length >= size()){
-            return toArray();
+        if (length >= size()) {
+            return getArray();
         }
         return copyArray(size(), length);
     }
 
-    private ArrayItem<E>[] copyArray(int length){
-        if (length == 0)
-            return getEmptyArray();
-
-        ArrayItem<E>[] copy = new ArrayItem[length];
-        for (int i=0; i<length; i++){
-            copy[i] = data[i];
+    protected Array clone() {
+        Array<T> dataClone = new Array(eClass, capacity);
+        T[] elements = (T[]) java.lang.reflect.Array.newInstance(eClass, capacity);
+        for (int i = 0; i < size; i++) {
+            elements[i] = data[i];
         }
-        return copy;
+        dataClone.setData(elements);
+        return dataClone;
     }
 
-    private ArrayItem<E>[] copyArray(int arrLength, int fillLength){
-        ArrayItem<E>[] copy = new ArrayItem[arrLength];
-        for (int i=0; i<fillLength; i++){
+    public void setData(T[] data) {
+        this.data = data;
+        this.size = data.length;
+    }
+
+    private T[] copyArray(int arrLength, int fillLength) {
+        T[] copy = (T[]) java.lang.reflect.Array.newInstance(eClass, fillLength);
+        for (int i = 0; i < arrLength; i++) {
             copy[i] = data[i];
         }
         return copy;
     }
 
     @Override
-    public boolean contains(E e) {
+    public boolean contains(T e) {
         return indexOf(e) >= 0;
     }
 
     @Override
-    public E get(int index) {
+    public T get(int index) {
         if (index < 0 || index >= capacity)
             throw new IndexOutOfBoundsException("Index: " + index + ", Size: " + capacity);
-        return data[index].item;
+        return data[index];
     }
 
     /*
-    * I should add my own exceptions for an array
-    * */
+     * I should add my own exceptions for an array
+     * */
     @Override
-    public void add(E e, int index) {
+    public void add(T e, int index) {
         if (index < 0 || index >= capacity)
             throw new IndexOutOfBoundsException("Index: " + index + ", Size: " + capacity);
-        if (size == capacity){
+        if (size == capacity) {
             throw new RuntimeException("No place for a new element");
         }
-        if (size < capacity){
-            if (!allowNull && e == null){
-                throw new RuntimeException("Can't add null element to this type of array");
-            }
+        if (size < capacity) {
             //I add an element in this index and all other goes right
-            for(int i=index; i<size; i++){
-                data[i+1] = data[i];
+            for (int i = index; i < size; i++) {
+                data[i + 1] = data[i];
             }
             size++;
-            data[index] = new ArrayItem<>(e);
+            data[index] = e;
         }
     }
 
     @Override
-    public void add(E e) {
-        if (size == capacity){
+    public void add(T e) {
+        if (size == capacity) {
             throw new RuntimeException("No place for a new element");
         }
-        if (size < capacity){
-            if (!allowNull && e == null){
-                throw new RuntimeException("Can't add null element to this type of array");
-            }
-            data[size] = new ArrayItem<>(e);
-            size++;
+        if (size < capacity) {
+            data[size++] = e;
         }
     }
 
     @Override
-    public void set(E e, int index) {
+    public void set(T e, int index) {
         if (index < 0 || index >= capacity)
             throw new IndexOutOfBoundsException("Index: " + index + ", Size: " + capacity);
-        if (!allowNull && e == null){
-            throw new RuntimeException("Can't add null element to this type of array");
-        }
-        data[index].setItem(e);
+        data[index] = e;
     }
 
     @Override
@@ -175,8 +199,8 @@ public class Array<E> implements ArrayI<E> {
     }
 
     @Override
-    public void remove(E e) {
-        if(!contains(e)){
+    public void remove(T e) {
+        if (!contains(e)) {
             throw new NoSuchElementException("");
         }
         for (int i = 0; i < size; i++) {
@@ -192,8 +216,8 @@ public class Array<E> implements ArrayI<E> {
     }
 
     @Override
-    public void removeAllOccurences(E e) {
-        if(!contains(e)){
+    public void removeAllOccurences(T e) {
+        if (!contains(e)) {
             throw new NoSuchElementException("");
         }
         for (int i = 0; i < size; i++) {
@@ -208,15 +232,15 @@ public class Array<E> implements ArrayI<E> {
 
     private void removeByIndex(int index) {
         int lastIndex = size - 1;
-        for (int i=index; i<lastIndex; i++){
-            data[i] = data[i+1];
+        for (int i = index; i < lastIndex; i++) {
+            data[i] = data[i + 1];
         }
         data[lastIndex] = null;
         size--;
     }
 
     @Override
-    public int indexOf(E e) {
+    public int indexOf(T e) {
         for (int i = 0; i < size; i++) {
             if (e == null && data[i] == null)
                 return i;
@@ -227,8 +251,8 @@ public class Array<E> implements ArrayI<E> {
     }
 
     @Override
-    public int lastIndexOf(E e) {
-        for (int i = size-1; i >= 0; i--) {
+    public int lastIndexOf(T e) {
+        for (int i = size - 1; i >= 0; i--) {
             if (e == null && data[i] == null)
                 return i;
             if (e != null && e.equals(data[i]))
@@ -238,71 +262,87 @@ public class Array<E> implements ArrayI<E> {
     }
 
     @Override
-    public ArrayI<E> subArray(int fromIndex, int toIndex) {
+    public ArrayI<T> subArray(int fromIndex, int toIndex) {
         return null;
     }
 
     @Override
-    public boolean containsAll(Collection<?> c) {
-        return false;
-    }
-
-    @Override
-    public boolean addAll(Collection<? extends E> c) {
-        return false;
-    }
-
-    @Override
-    public boolean replaceAll(Collection<? extends E> c, int startIndexThis, int startIndexCol, int length) {
-        return false;
-    }
-
-    @Override
-    public boolean removeAll(Collection<?> c) {
-        return false;
-    }
-
-    @Override
-    public boolean retainAll(Collection<?> c) {
-        return false;
-    }
-
-    @Override
-    public Jiterator<E> jiterator() {
-        return null;
-    }
-
-    @Override
-    public Jiterator<E> jiterator(int index) {
-        return null;
-    }
-
-    @Override
-    public Iterator<E> iterator() {
-        return null;
-    }
-
-    public boolean isAllowNull() {
-        return allowNull;
-    }
-
-    public void setAllowNull(boolean allowNull) {
-        this.allowNull = allowNull;
-    }
-
-    private class ArrayItem<E> {
-        private E item;
-        public ArrayItem(E elem){
-            item = elem;
+    public boolean containsAll(Collection<T> collection) {
+        Objects.requireNonNull(collection);
+        boolean containsAll = true;
+        for (T element: collection){
+            if (!contains(element)) {
+                containsAll = false;
+                break;
+            }
         }
+        return containsAll;
+    }
 
-        public E getItem() {
-            return item;
+    @Override
+    public void addAll(Collection<T> collection) {
+        Objects.requireNonNull(collection);
+        int freeSpace = capacity - size;
+        if (collection.size() > freeSpace){
+            throw new RuntimeException("Cannot add all elements, no free space.");
         }
+        int j = 0;
+        for (int i = size; i < size + collection.size(); i++){
+            data[size++] = collection.get(j++);
+        }
+    }
 
-        public void setItem(E item) {
-            this.item = item;
+    @Override
+    public void replaceAll(Collection<T> collection, int startIndexThis, int startIndexCol, int length) {
+        Objects.requireNonNull(collection);
+        T[] colArray = collection.getArray();
+        //startIndexThis should be in range
+        if (startIndexThis < 0 || startIndexThis >= capacity)
+            throw new IndexOutOfBoundsException("Index: " + startIndexThis + ", Size: " + capacity);
+        //startIndexCol should be in range
+        if (startIndexCol < 0 || startIndexCol >= colArray.length)
+            throw new IndexOutOfBoundsException("Index: " + startIndexCol + ", Size: " + colArray.length);
+        //startIndexThis + length - 1 should be in range
+        int endIndex = startIndexThis + length;
+        if (endIndex < 0 || endIndex > capacity)
+            throw new IndexOutOfBoundsException("Index: " + endIndex + ", Size: " + capacity);
+        for (int i = startIndexThis; i < endIndex; i++){
+            data[i] = colArray[startIndexCol];
+            startIndexCol++;
         }
+    }
+
+    @Override
+    public void removeAll(Collection<T> collection) {
+        Objects.requireNonNull(collection);
+        for (T element: data){
+            if (collection.contains(element))
+                remove(element);
+        }
+    }
+
+    @Override
+    public void retainAll(Collection<T> collection) {
+        Objects.requireNonNull(collection);
+        for (T element: data){
+            if (!collection.contains(element))
+                remove(element);
+        }
+    }
+
+    @Override
+    public Jiterator<T> jiterator() {
+        return null;
+    }
+
+    @Override
+    public Jiterator<T> jiterator(int index) {
+        return null;
+    }
+
+    @Override
+    public Iterator<T> iterator() {
+        return null;
     }
 
 }

@@ -7,32 +7,32 @@ import util.collections.interfaces.collection.array.ArrayI;
 
 import java.util.Iterator;
 
-public class SecureArray<E> implements Collection<E> {
+public class SecureArray<T> implements Collection<T> {
 
-    private ArrayI<E> array;
+    private ArrayI<T> array;
 
     private ArrayAccess access = ArrayAccess.READ;
 
     @Override
-    public Object[] toArray() {
+    public T[] getArray() {
         if(access != ArrayAccess.NONE){
-            return array.toArray();
+            return array.getArray();
         } else {
             throw new RuntimeException("Permission denied.");
         }
     }
 
     @Override
-    public Object[] toArray(int length) {
+    public T[] getArray(int length) {
         if(access != ArrayAccess.NONE){
-            return array.toArray(length);
+            return array.getArray(length);
         } else {
             throw new RuntimeException("Permission denied.");
         }
     }
 
     @Override
-    public boolean contains(E e) {
+    public boolean contains(T e) {
         if(access != ArrayAccess.NONE){
             return array.contains(e);
         } else {
@@ -41,7 +41,7 @@ public class SecureArray<E> implements Collection<E> {
     }
 
     @Override
-    public E get(int index) {
+    public T get(int index) {
         if(access != ArrayAccess.NONE){
             return array.get(index);
         } else {
@@ -50,7 +50,7 @@ public class SecureArray<E> implements Collection<E> {
     }
 
     @Override
-    public void add(E e, int index) {
+    public void add(T e, int index) {
         if(access == ArrayAccess.WRITE){
             array.add(e, index);
         } else {
@@ -59,7 +59,7 @@ public class SecureArray<E> implements Collection<E> {
     }
 
     @Override
-    public void add(E e) {
+    public void add(T e) {
         if(access == ArrayAccess.WRITE){
             array.add(e);
         } else {
@@ -68,7 +68,7 @@ public class SecureArray<E> implements Collection<E> {
     }
 
     @Override
-    public void set(E e, int index) {
+    public void set(T e, int index) {
         if(access == ArrayAccess.WRITE){
             array.set(e, index);
         } else {
@@ -86,7 +86,7 @@ public class SecureArray<E> implements Collection<E> {
     }
 
     @Override
-    public void remove(E e) {
+    public void remove(T e) {
         if(access == ArrayAccess.WRITE){
             array.remove(e);
         } else {
@@ -95,7 +95,7 @@ public class SecureArray<E> implements Collection<E> {
     }
 
     @Override
-    public void removeAllOccurences(E e) {
+    public void removeAllOccurences(T e) {
         if(access == ArrayAccess.WRITE){
             array.removeAllOccurences(e);
         } else {
@@ -104,36 +104,36 @@ public class SecureArray<E> implements Collection<E> {
     }
 
     @Override
-    public boolean addAll(Collection c) {
+    public void addAll(Collection c) {
         if(access == ArrayAccess.WRITE){
-            return array.addAll(c);
+            array.addAll(c);
         } else {
             throw new RuntimeException("Permission denied.");
         }
     }
 
     @Override
-    public boolean replaceAll(Collection c, int startIndexThis, int startIndexCol, int length) {
+    public void replaceAll(Collection c, int startIndexThis, int startIndexCol, int length) {
         if(access == ArrayAccess.WRITE){
-            return array.replaceAll(c, startIndexThis, startIndexCol, length);
+            array.replaceAll(c, startIndexThis, startIndexCol, length);
         } else {
             throw new RuntimeException("Permission denied.");
         }
     }
 
     @Override
-    public boolean retainAll(Collection c) {
+    public void retainAll(Collection c) {
         if(access == ArrayAccess.WRITE){
-            return array.retainAll(c);
+            array.retainAll(c);
         } else {
             throw new RuntimeException("Permission denied.");
         }
     }
 
     @Override
-    public boolean removeAll(Collection c) {
+    public void removeAll(Collection c) {
         if(access == ArrayAccess.WRITE){
-            return array.removeAll(c);
+            array.removeAll(c);
         } else {
             throw new RuntimeException("Permission denied.");
         }
@@ -155,6 +155,11 @@ public class SecureArray<E> implements Collection<E> {
         } else {
             throw new RuntimeException("Permission denied.");
         }
+    }
+
+    @Override
+    public int capacity() {
+        return 0;
     }
 
     @Override

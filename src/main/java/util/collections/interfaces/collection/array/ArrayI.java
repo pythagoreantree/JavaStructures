@@ -2,14 +2,14 @@ package util.collections.interfaces.collection.array;
 
 import util.collections.interfaces.collection.Collection;
 
-public interface ArrayI<E> extends Collection<E> {
+public interface ArrayI<T> extends Collection<T> {
 
-//    void sort(Comparator<? super E> c);
+//    void sort(Comparator<? super T> c);
 
-    int indexOf(E e);
+    int indexOf(T e);
 
-    int lastIndexOf(E e);
+    int lastIndexOf(T e);
 
-    ArrayI<E> subArray(int fromIndex, int toIndex);
+    ArrayI<T> subArray(int fromIndex, int toIndex);
 
 }

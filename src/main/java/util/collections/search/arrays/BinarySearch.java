@@ -1,6 +1,5 @@
 package util.collections.search.arrays;
 
-import util.collections.implementations.arrays.Array;
 import util.collections.implementations.arrays.primitives.*;
 import util.collections.sort.MergeSort;
 import util.collections.sort.SortingAlgorithm;
@@ -37,7 +36,7 @@ public class BinarySearch {
         return -1;
     }
 
-    public static <E> int search(E[] arr, E elem) {
+    public static <E extends Comparable<E>> int search(E[] arr, E elem) {
         if (arr == null || arr.length == 0)
             return -1;
 
@@ -47,8 +46,7 @@ public class BinarySearch {
         int left = 0, right = arr.length - 1;
         while (left <= right) {
             int mid = left + (right - left) / 2;
-            Comparable<E> midElem = (Comparable) arr[mid];
-            int comparisonResult = midElem.compareTo(elem);
+            int comparisonResult = arr[mid].compareTo(elem);
             if (comparisonResult == 0) {
                 return mid;
             } else if (comparisonResult < 0) {
@@ -64,50 +62,42 @@ public class BinarySearch {
     * Binary Search for primitives
     * */
     public static int binarySearch(long[] arr, long elem) {
-        return searchPrimitive(new LongArray(arr).getLongs(), Long.valueOf(elem));
+        return search(new LongArray(arr).getLongs().getArray(), Long.valueOf(elem));
     }
 
     public static int binarySearch(int[] arr, int elem) {
-        return searchPrimitive(new IntegerArray(arr).getIntegers(), Integer.valueOf(elem));
+        return search(new IntegerArray(arr).getIntegers().getArray(), Integer.valueOf(elem));
     }
 
     public static int binarySearch(short[] arr, short elem) {
-        return searchPrimitive(new ShortArray(arr).getShorts(), Short.valueOf(elem));
+        return search(new ShortArray(arr).getShorts().getArray(), Short.valueOf(elem));
     }
 
     public static int binarySearch(char[] arr, char elem) {
-        return searchChars(new CharArray(arr).getChars(), Character.valueOf(elem));
+        return search(new CharArray(arr).getChars().getArray(), Character.valueOf(elem));
     }
 
     public static int binarySearch(byte[] arr, byte elem) {
-        return searchPrimitive(new ByteArray(arr).getBytes(), Byte.valueOf(elem));
+        return search(new ByteArray(arr).getBytes().getArray(), Byte.valueOf(elem));
     }
 
     public static int binarySearch(double[] arr, double elem){
-        return searchPrimitive(new DoubleArray(arr).getDoubles(), Double.valueOf(elem));
+        return search(new DoubleArray(arr).getDoubles().getArray(), Double.valueOf(elem));
     }
 
     public static int binarySearch(float[] arr, float elem){
-        return searchPrimitive(new FloatArray(arr).getFloat(), Float.valueOf(elem));
-    }
-
-    private static int searchPrimitive(Array<? extends Number> arr, Number elem){
-        return search(arr.toArray(), elem);
-    }
-
-    private static int searchChars(Array<Character> arr, Character elem){
-        return search(arr.toArray(), elem);
+        return search(new FloatArray(arr).getFloat().getArray(), Float.valueOf(elem));
     }
 
     /*
     * Sort and Search Array
     * */
-    public static <E> int sortAndSearch(E[] arr, E elem) {
+    public static <E extends Comparable<E>> int sortAndSearch(E[] arr, E elem) {
         MergeSort.sort(arr);
         return search(arr, elem);
     }
 
-    public static <E> int sortAndSearch(E[] arr, E elem, SortingAlgorithm<E> algorithm) {
+    public static <E extends Comparable<E>> int sortAndSearch(E[] arr, E elem, SortingAlgorithm<E> algorithm) {
         if (algorithm == null)
             throw new RuntimeException("Please, define the sorting algorythm");
         algorithm.sort(arr);
