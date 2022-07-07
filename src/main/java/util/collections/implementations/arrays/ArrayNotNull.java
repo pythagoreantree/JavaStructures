@@ -118,6 +118,6 @@ public class ArrayNotNull<T> extends Array<T> {
     public void retainAll(Collection<T> collection) {
         Objects.requireNonNull(collection);
         collection.removeAllOccurences(null);
-        collection.retainAll(collection);
+        super.retainAll(collection);
     }
 }
