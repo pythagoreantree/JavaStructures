@@ -2,7 +2,7 @@
 
 Java Project to implement Data Structures in Java (in my way).
 
-What is already done
+What is already done:
 
-Arrays (various array implementations)
-Trees (BT, BST, AVL)
++ Arrays (various array implementations)
++ Trees (BT, BST, AVL)
