@@ -92,7 +92,7 @@ public class AVLTree<T> extends BinarySearchTree<T> {
         if (balance > 1 && node.left != null) {
             Comparable<T> nkeyLeft = (Comparable) node.left.key;
             if (nkeyLeft.compareTo(key) < 0) { //key > node.left.val
-                node.left = leftRotate((TreeNode) node.left);
+                node.left = leftRotate(node.left);
                 return rightRotate(node);
             }
         }
@@ -101,7 +101,7 @@ public class AVLTree<T> extends BinarySearchTree<T> {
         if (balance < -1 && node.right != null) {
             Comparable<T> nkeyRight = (Comparable) node.right.key;
             if (nkeyRight.compareTo(key) > 0) { //key < node.right.val
-                node.right = rightRotate((TreeNode) node.right);
+                node.right = rightRotate(node.right);
                 return leftRotate(node);
             }
         }
