@@ -6,6 +6,8 @@ public class TreeNode<T> {
     public TreeNode<T> left;
     public TreeNode<T> right;
 
+    public int height = 1; //temporary measure to standartise the interface
+
     TreeNode() {}
 
     TreeNode(T val) {

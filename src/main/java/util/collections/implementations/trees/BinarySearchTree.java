@@ -4,7 +4,7 @@ import util.collections.interfaces.tree.TreeI;
 
 public class BinarySearchTree<T> implements TreeI<T> {
 
-    private TreeNode<T> root;
+    protected TreeNode<T> root;
 
     /*
     * O(h) time complexity

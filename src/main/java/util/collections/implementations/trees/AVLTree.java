@@ -1,106 +1,79 @@
 package util.collections.implementations.trees;
 
-import util.collections.interfaces.tree.TreeI;
+public class AVLTree<T> extends BinarySearchTree<T> {
 
-public class AVLTree<T> implements TreeI<T> {
-
-    public AVLNode<T> root;
-
-    // A utility function to get the height of a node
-    private int height(AVLNode node) {
+    private int height(TreeNode<T> node) {
         if (node == null)
             return 0;
         return node.height;
     }
 
-    // A utility function to right rotate subtree rooted with y
-    // See the diagram given above.
-    private AVLNode rightRotate(AVLNode z) {
-        AVLNode y = (AVLNode) z.left;
-        AVLNode T2 = (AVLNode) y.right;
+    private TreeNode<T> rightRotate(TreeNode<T> z) {
+        TreeNode<T> y = z.left;
+        TreeNode<T> T2 = y.right;
 
-        // Perform rotation
         y.right = z;
         z.left = T2;
 
-        // Update heights
-        z.height = Math.max(height((AVLNode) z.left), height((AVLNode) z.right)) + 1;
-        y.height = Math.max(height((AVLNode) y.left), height((AVLNode) y.right)) + 1;
+        z.height = Math.max(height(z.left), height(z.right)) + 1;
+        y.height = Math.max(height(y.left), height(y.right)) + 1;
 
-        // Return new root
         return y;
     }
 
-    // A utility function to left rotate subtree rooted with x
-    // See the diagram given above.
-    private AVLNode leftRotate(AVLNode z) {
-        AVLNode y = (AVLNode) z.right;
-        AVLNode T2 = (AVLNode) y.left;
+    private TreeNode<T> leftRotate(TreeNode<T> z) {
+        TreeNode<T> y = z.right;
+        TreeNode<T> T2 = y.left;
 
-        // Perform rotation
         y.left = z;
         z.right = T2;
 
-        //  Update heights
-        z.height = Math.max(height((AVLNode) z.left), height((AVLNode) z.right)) + 1;
-        y.height = Math.max(height((AVLNode) y.left), height((AVLNode) y.right)) + 1;
+        z.height = Math.max(height(z.left), height(z.right)) + 1;
+        y.height = Math.max(height(y.left), height(y.right)) + 1;
 
-        // Return new root
         return y;
     }
 
-    // Get Balance factor of a node
-    private int getBalance(AVLNode node) {
+    private int getBalance(TreeNode<T> node) {
         if (node == null)
             return 0;
 
-        return height((AVLNode) node.left) - height((AVLNode) node.right);
+        return height(node.left) - height(node.right);
     }
 
-    @Override
-    public TreeNode<T> search(T key) {
-        return root;
+    private TreeNode<T> minValueNode(TreeNode<T> node) {
+        TreeNode<T> current = node;
+
+        /* loop down to find the leftmost leaf */
+        while (current.left != null)
+            current = current.left;
+
+        return current;
     }
-
-    @Override
-    public void remove(T key) {
-
-    }
-
-    @Override
-    public TreeNode<T> getRoot() {
-        return root;
-    }
-
+    
     public void add(T key) {
         root = add(root, key);
     }
 
-    public AVLNode<T> add(AVLNode<T> node, T key) {
+    private TreeNode<T> add(TreeNode<T> node, T key) {
 
-        /* 1.  Perform the normal BST insertion */
         if (node == null)
-            return (new AVLNode(key));
+            return new TreeNode(key);
 
         Comparable<T> nkey = (Comparable) node.key;
         if (nkey.compareTo(key) > 0) //key < node.val
-            node.left = add((AVLNode<T>) node.left, key);
+            node.left = add(node.left, key);
         else if (nkey.compareTo(key) < 0) //key > node.val
-            node.right = add((AVLNode<T>) node.right, key);
+            node.right = add(node.right, key);
         else // Duplicate keys not allowed
             return node;
 
-        /* 2. Update height of this ancestor node */
-        node.height = 1 + Math.max(height((AVLNode) node.left), height((AVLNode) node.right));
+        node.height = 1 + Math.max(height(node.left), height(node.right));
 
-        /* 3. Get the balance factor of this ancestor
-              node to check whether this node became
-              unbalanced */
         int balance = getBalance(node);
 
         // If this node becomes unbalanced, then there
         // are 4 cases Left Left Case
-        //here it may fail if node.left == null
         if (balance > 1 && node.left != null) {
             Comparable<T> nkeyLeft = (Comparable) node.left.key;
             if (nkeyLeft.compareTo(key) > 0) { //key < node.left.val
@@ -119,7 +92,7 @@ public class AVLTree<T> implements TreeI<T> {
         if (balance > 1 && node.left != null) {
             Comparable<T> nkeyLeft = (Comparable) node.left.key;
             if (nkeyLeft.compareTo(key) < 0) { //key > node.left.val
-                node.left = leftRotate((AVLNode) node.left);
+                node.left = leftRotate((TreeNode) node.left);
                 return rightRotate(node);
             }
         }
@@ -128,27 +101,79 @@ public class AVLTree<T> implements TreeI<T> {
         if (balance < -1 && node.right != null) {
             Comparable<T> nkeyRight = (Comparable) node.right.key;
             if (nkeyRight.compareTo(key) > 0) { //key < node.right.val
-                node.right = rightRotate((AVLNode) node.right);
+                node.right = rightRotate((TreeNode) node.right);
                 return leftRotate(node);
             }
         }
 
-        /* return the (unchanged) node pointer */
         return node;
     }
 
-    public void inOrderTraversal() {
-        inOrderTraversal(root);
+    @Override
+    public void remove(T key){
+        root = removeNode(root, key);
     }
 
-    public void inOrderTraversal(AVLNode root) {
-        if (root == null)
-            return;
+    public TreeNode<T> removeNode(TreeNode<T> node, T key) {
 
-        inOrderTraversal((AVLNode) root.left);
+        if (node == null)
+            return node;
 
-        System.out.print(root.key + " ");
+        Comparable<T> nkey = (Comparable) node.key;
+        if (nkey.compareTo(key) > 0)
+            node.left = removeNode(node.left, key);
+        else if (nkey.compareTo(key) < 0)
+            node.right = removeNode(node.right, key);
+        else {
+            // node with only one child or no child
+            if ((node.left == null) || (node.right == null)) {
+                TreeNode<T> temp;
+                if (node.left == null)
+                    temp = node.right;
+                else
+                    temp = node.left;
 
-        inOrderTraversal((AVLNode) root.right);
+                // No child case
+                if (temp == null) {
+                    temp = node;
+                    node = null;
+                } else // One child case
+                    node = temp; // Copy the contents of the non-empty child
+            } else {
+                TreeNode<T> temp = minValueNode(node.right);
+                node.key = temp.key;
+                node.right = removeNode(node.right, temp.key);
+            }
+        }
+
+        if (node == null)
+            return node;
+
+        node.height = Math.max(height(node.left), height(node.right)) + 1;
+
+        int balance = getBalance(node);
+
+        // Left Left Case
+        if (balance > 1 && getBalance(node.left) >= 0)
+            return rightRotate(node);
+
+        // Left Right Case
+        if (balance > 1 && getBalance(node.left) < 0) {
+            node.left = leftRotate(node.left);
+            return rightRotate(node);
+        }
+
+        // Right Right Case
+        if (balance < -1 && getBalance(node.right) <= 0)
+            return leftRotate(node);
+
+        // Right Left Case
+        if (balance < -1 && getBalance(node.right) > 0) {
+            node.right = rightRotate(node.right);
+            return leftRotate(node);
+        }
+
+        return node;
     }
+
 }
