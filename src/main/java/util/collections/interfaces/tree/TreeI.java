@@ -13,4 +13,6 @@ public interface TreeI<T> {
 
     TreeNode<T> getRoot();
 
+    int size();
+
 }

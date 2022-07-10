@@ -57,7 +57,11 @@ public class BinarySearchTree<T> implements TreeI<T> {
             return null;
 
         Comparable<T> nkey = (Comparable) node.key;
-        if (nkey.compareTo(key) == 0) {
+        if (nkey.compareTo(key) > 0){
+            node.left = remove(node.left, key);
+        } else if (nkey.compareTo(key) < 0) {
+            node.right = remove(node.right, key);
+        } else {
             if (node.right == null)
                 return node.left;
             else if (node.left == null)
@@ -69,10 +73,6 @@ public class BinarySearchTree<T> implements TreeI<T> {
 
             node.key = inOrderSuccessor.key;
             node.right = remove(node.right, inOrderSuccessor.key);
-        } else if (nkey.compareTo(key) < 0){
-            node.right = remove(node.right, key);
-        } else {
-            node.left = remove(node.left, key);
         }
         return node;
     }
@@ -80,5 +80,10 @@ public class BinarySearchTree<T> implements TreeI<T> {
     @Override
     public TreeNode<T> getRoot() {
         return root;
+    }
+
+    @Override
+    public int size() {
+        return 0;
     }
 }

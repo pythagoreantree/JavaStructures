@@ -131,4 +131,9 @@ public class BinaryTree<T> implements TreeI<T> {
     public TreeNode<T> getRoot() {
         return root;
     }
+
+    @Override
+    public int size() {
+        return 0;
+    }
 }
