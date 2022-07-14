@@ -52,7 +52,7 @@ public class BinarySearchTree<T> implements TreeI<T> {
         remove(root, key);
     }
 
-    public TreeNode remove(TreeNode node, T key) {
+    public TreeNode<T> remove(TreeNode<T> node, T key) {
         if (node == null)
             return null;
 

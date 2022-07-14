@@ -74,36 +74,29 @@ public class AVLTree<T> extends BinarySearchTree<T> {
 
         // If this node becomes unbalanced, then there
         // are 4 cases Left Left Case
-        if (balance > 1 && node.left != null) {
-            Comparable<T> nkeyLeft = (Comparable) node.left.key;
-            if (nkeyLeft.compareTo(key) > 0) { //key < node.left.val
-                return rightRotate(node);
-            }
+        if (balance > 1 && node.left != null
+                && ((Comparable) node.left.key).compareTo(key) > 0) {
+            return rightRotate(node);
         }
 
-        // Right Right Case
-        if (balance < -1 && node.right != null) { //key > node.right.val
-            Comparable<T> nkeyRight = (Comparable) node.right.key;
-            if (nkeyRight.compareTo(key) < 0)
-                return leftRotate(node);
+        // Right Right Case (+)
+        if (balance < -1 && node.right != null
+                && ((Comparable) node.right.key).compareTo(key) < 0) { //node.right.key < key
+            return leftRotate(node);
         }
 
         // Left Right Case
-        if (balance > 1 && node.left != null) {
-            Comparable<T> nkeyLeft = (Comparable) node.left.key;
-            if (nkeyLeft.compareTo(key) < 0) { //key > node.left.val
-                node.left = leftRotate(node.left);
-                return rightRotate(node);
-            }
+        if (balance > 1 && node.left != null
+                && ((Comparable) node.left.key).compareTo(key) < 0) {
+            node.left = leftRotate(node.left);
+            return rightRotate(node);
         }
 
-        // Right Left Case
-        if (balance < -1 && node.right != null) {
-            Comparable<T> nkeyRight = (Comparable) node.right.key;
-            if (nkeyRight.compareTo(key) > 0) { //key < node.right.val
-                node.right = rightRotate(node.right);
-                return leftRotate(node);
-            }
+        // Right Left Case (+)
+        if (balance < -1 && node.right != null
+                && ((Comparable) node.right.key).compareTo(key) > 0) { //node.right.key > key
+            node.right = rightRotate(node.right);
+            return leftRotate(node);
         }
 
         return node;
