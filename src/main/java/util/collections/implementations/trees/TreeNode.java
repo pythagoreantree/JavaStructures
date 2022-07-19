@@ -6,7 +6,10 @@ public class TreeNode<T> {
     public TreeNode<T> left;
     public TreeNode<T> right;
 
+    public TreeNode<T> parent; //for RB-Trees
+
     public int height = 1; //temporary measure to standartise the interface
+    public byte color = 0; //for RB-trees
 
     TreeNode() {}
 
