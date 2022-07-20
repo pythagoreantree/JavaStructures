@@ -54,10 +54,10 @@ public class RedBlackTree<T> extends BinarySearchTree<T> {
                     }
                     swapColors(parent.parent, parent.parent.left);
                     TreeNode<T> rotatedGP = rightRotate(parent.parent);
-                    if (parent.parent == parent.parent.left)
-                        parent.parent.left = rotatedGP;
+                    if (parent.parent == parent.parent.parent.left)
+                        parent.parent.parent.left = rotatedGP;
                     else
-                        parent.parent.right = rotatedGP;
+                        parent.parent.parent.right = rotatedGP;
                 } else if (uncle != null && uncle.color == 1) {
                     parent.color = 0;
                     uncle.color = 0;
