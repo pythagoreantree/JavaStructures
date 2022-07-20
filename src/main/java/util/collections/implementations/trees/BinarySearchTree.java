@@ -30,7 +30,7 @@ public class BinarySearchTree<T> implements TreeI<T> {
         add(root, key);
     }
 
-    private TreeNode add(TreeNode<T> node, T key){
+    private TreeNode<T> add(TreeNode<T> node, T key){
         if(node == null) {
             TreeNode leaf = new TreeNode(key);
             return leaf;

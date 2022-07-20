@@ -6,41 +6,30 @@ public class RedBlackTree<T> extends BinarySearchTree<T> {
 
     public RedBlackTree() {}
 
-    public void insert(T key){
-        TreeNode<T> z = new TreeNode<>(key);
-        TreeNode<T> y = endNode;
-        TreeNode<T> x = root;
-        Comparable<T> zkey = (Comparable) z.key;
-        while (x != endNode){
-            y = x;
-            if (zkey.compareTo(x.key) < 0)
-                x = x.left;
-            else x = x.right;
+    public void add(T key){
+        TreeNode<T> newNode = new TreeNode<>(key, endNode, endNode);
+        TreeNode<T> nodeParent = endNode;
+        TreeNode<T> nodeToInsert = root;
+        Comparable<T> newkey = (Comparable) newNode.key;
+        while (nodeToInsert != endNode){
+            nodeParent = nodeToInsert;
+            if (newkey.compareTo(nodeToInsert.key) < 0)
+                nodeToInsert = nodeToInsert.left;
+            else nodeToInsert = nodeToInsert.right;
         }
-        z.parent = y;
-        if (y == endNode) {
-            root = z;
-        } else if (zkey.compareTo(y.key) < 0){
-            y.left = z;
+        newNode.parent = nodeParent;
+        if (nodeParent == endNode) {
+            root = newNode;
+        } else if (newkey.compareTo(newNode.key) < 0){
+            nodeParent.left = newNode;
         } else {
-            y.right = z;
+            nodeParent.right = newNode;
         }
-        z.left = endNode;
-        z.right = endNode;
-        z.color = 1;
-        insertFixup(z);
+        newNode.color = 1;
+        insertFixup(newNode);
     }
 
-    private void insertFixup(TreeNode<T> z) {
+    private void insertFixup(TreeNode<T> node) {
 
-    }
-
-    @Override
-    public void add(T key) {
-        root = add(root, key);
-    }
-
-    private TreeNode<T> add(TreeNode<T> node, T key){
-        return null;
     }
 }
