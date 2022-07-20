@@ -49,28 +49,40 @@ public class RedBlackTree<T> extends BinarySearchTree<T> {
                 TreeNode<T> uncle = parent.parent.right;
                 //if uncle == null
                 if (uncle == null || uncle.color == 0) {
-                    if (node == node.parent.right){
-                        parent.parent.left = leftRotate(node.parent);
+                    if (node == parent.right){
+                        parent.parent.left = leftRotate(parent);
                     }
-                    swapColors(parent.parent, parent.parent.left);
-                    TreeNode<T> rotatedGP = rightRotate(parent.parent);
-                    if (parent.parent == parent.parent.parent.left)
-                        parent.parent.parent.left = rotatedGP;
-                    else
-                        parent.parent.parent.right = rotatedGP;
-                } else if (uncle != null && uncle.color == 1) {
+                    swapColors(parent.parent.left, parent.parent);
+                    rightRotate(parent.parent);
+                    break;
+                } else if (uncle.color == 1) {
                     parent.color = 0;
                     uncle.color = 0;
                     parent.parent.color = 1;
                     node = node.parent.parent;
                 }
             } else if (parent == parent.parent.right){
-
+                TreeNode<T> uncle = parent.parent.left;
+                //if uncle == null
+                if (uncle == null || uncle.color == 0) {
+                    if (node == parent.left){
+                        parent.parent.right = rightRotate(parent);
+                    }
+                    swapColors(parent.parent, parent.parent.right);
+                    leftRotate(parent.parent);
+                    break;
+                } else if (uncle.color == 1){
+                    //incapsulate this part into function
+                    parent.color = 0;
+                    uncle.color = 0;
+                    parent.parent.color = 1;
+                    node = node.parent.parent;
+                }
             } else {
                 throw new RuntimeException("Smth wrong with P - GP linkage.");
             }
         }
-        //here root.color = 0;
+        root.color = 0;
     }
 
     private void swapColors(TreeNode<T> node1, TreeNode<T> node2) {
