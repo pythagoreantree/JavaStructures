@@ -5,8 +5,8 @@ import util.collections.interfaces.tree.TreeNodeI;
 public class TreeNode<T> implements TreeNodeI<T> {
 
     private T key;
-    private TreeNode<T> left;
-    private TreeNode<T> right;
+    protected TreeNode<T> left;
+    protected TreeNode<T> right;
 
     TreeNode() {}
 

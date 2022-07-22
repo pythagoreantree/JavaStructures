@@ -33,9 +33,17 @@ public class AVLNode<T> extends TreeNode<T> {
         return (AVLNode<T>) super.left();
     }
 
+    public void setLeft(AVLNode<T> left) {
+        this.left = left;
+    }
+
     @Override
     public AVLNode<T> right() {
         return (AVLNode<T>) super.right();
+    }
+
+    public void setRight(AVLNode<T> right) {
+        this.right = right;
     }
 
 }

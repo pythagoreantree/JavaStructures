@@ -5,13 +5,13 @@ import util.collections.implementations.trees.TreeNode;
 
 public interface TreeI<T> {
 
-    TreeNode<T> search(T key);
+    TreeNodeI<T> search(T key);
 
     void add(T key);
 
     void remove(T key);
 
-    TreeNode<T> getRoot();
+    TreeNodeI<T> getRoot();
 
     int size();
 

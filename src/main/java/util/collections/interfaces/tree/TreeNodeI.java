@@ -6,6 +6,8 @@ public interface TreeNodeI<T> {
 
     TreeNodeI<T> right();
 
+    T key();
+
     TreeNodeI<T> parent();
 
 }

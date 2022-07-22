@@ -9,57 +9,57 @@ public class SplayTree<T> extends BinarySearchTree<T> {
 
     private TreeNode<T> rightRotate(TreeNode<T> z) {
         TreeNode<T> y = z.left();
-        z.left = y.right;
-        y.right = z;
+        z.setLeft(y.right());
+        y.setRight(z);
         return y;
     }
 
     // A utility function to left rotate subtree rooted with z
     private TreeNode<T> leftRotate(TreeNode<T> z) {
-        TreeNode<T> y = z.right;
-        z.right = y.left;
-        y.left = z;
+        TreeNode<T> y = z.right();
+        z.setRight(y.left());
+        y.setLeft(z);
         return y;
     }
 
     private TreeNode<T> search(TreeNode<T> root, T key) {
 
-        if (root == null || root.key == key)
+        if (root == null || root.key() == key)
             return root;
 
-        Comparable<T> rootKey = (Comparable) root.key;
+        Comparable<T> rootKey = (Comparable) root.key();
         if (rootKey.compareTo(key) > 0) {
 
-            if (root.left == null) return root;
+            if (root.left() == null) return root;
 
             // Zig-Zig (Left Left)
-            Comparable<T> rootLeftKey = (Comparable) root.left.key;
+            Comparable<T> rootLeftKey = (Comparable) root.left().key();
             if (rootLeftKey.compareTo(key) > 0) {
-                root.left.left = search(root.left.left, key);
+                root.left().setLeft(search(root.left().left(), key));
                 root = rightRotate(root);
             } else if (rootLeftKey.compareTo(key) < 0) /* Zig-Zag (Left Right)*/  {
-                root.left.right = search(root.left.right, key);
-                if (root.left.right != null)
-                    root.left = leftRotate(root.left);
+                root.left().setRight(search(root.left().right(), key));
+                if (root.left().right() != null)
+                    root.setLeft(leftRotate(root.left()));
             }
 
-            return (root.left == null) ? root : rightRotate(root);
+            return (root.left() == null) ? root : rightRotate(root);
 
         } else /* Key lies in right subtree*/ {
-            if (root.right == null) return root;
+            if (root.right() == null) return root;
 
             // Zag-Zig (Right Left)
-            Comparable<T> rootRightKey = (Comparable) root.right.key;
+            Comparable<T> rootRightKey = (Comparable) root.right().key();
             if (rootRightKey.compareTo(key) > 0) {
-                root.right.left = search(root.right.left, key);
-                if (root.right.left != null)
-                    root.right = rightRotate(root.right);
+                root.right().setLeft(search(root.right().left(), key));
+                if (root.right().left() != null)
+                    root.setRight(rightRotate(root.right()));
             } else if (rootRightKey.compareTo(key) < 0)/* Zag-Zag (Right Right)*/ {
-                root.right.right = search(root.right.right, key);
+                root.right().setRight(search(root.right().right(), key));
                 root = leftRotate(root);
             }
 
-            return (root.right == null) ? root : leftRotate(root);
+            return (root.right() == null) ? root : leftRotate(root);
         }
     }
 
@@ -73,18 +73,18 @@ public class SplayTree<T> extends BinarySearchTree<T> {
 
         root = search(root, key);
 
-        if (root.key == key) return root;
+        if (root.key() == key) return root;
 
         TreeNode<T> newNode = new TreeNode<T>(key);
-        Comparable<T> rootKey = (Comparable) root.key;
+        Comparable<T> rootKey = (Comparable) root.key();
         if (rootKey.compareTo(key) > 0) {
-            newNode.right = root;
-            newNode.left = root.left;
-            root.left = null;
+            newNode.setRight(root);
+            newNode.setLeft(root.left());
+            root.setLeft(null);
         } else {
-            newNode.left = root;
-            newNode.right = root.right;
-            root.right = null;
+            newNode.setLeft(root);
+            newNode.setRight(root.right());
+            root.setRight(null);
         }
         return newNode;
     }
@@ -105,7 +105,7 @@ public class SplayTree<T> extends BinarySearchTree<T> {
 
         // If key is not present, then
         // return root
-        Comparable<T> rootKey = (Comparable) root.key;
+        Comparable<T> rootKey = (Comparable) root.key();
         if (rootKey == null && key == null)
             return root;
         if (rootKey.compareTo(key) != 0)
@@ -114,8 +114,8 @@ public class SplayTree<T> extends BinarySearchTree<T> {
         // If key is present
         // If left child of root does not exist
         // make root.right as root
-        if (root.left == null)
-            return root.right;
+        if (root.left() == null)
+            return root.right();
 
         // Else if left child exits
         TreeNode<T> temp = root;
@@ -124,11 +124,11 @@ public class SplayTree<T> extends BinarySearchTree<T> {
         the tree we get will have no right child tree
         and maximum node in left subtree will get splayed*/
         // New root
-        root = search(root.left, key);
+        root = search(root.left(), key);
 
         // Make right child of previous root as
         // new root's right child
-        root.right = temp.right;
+        root.setRight(temp.right());
 
         // return root of the new Splay Tree
         return root;

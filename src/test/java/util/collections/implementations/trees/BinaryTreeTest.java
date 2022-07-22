@@ -40,6 +40,6 @@ class BinaryTreeTest {
         Assertions.assertNull(search13);
         TreeNode search4 = tree.search(8);
         Assertions.assertNotNull(search4);
-        Assertions.assertEquals(8, search4.key);
+        Assertions.assertEquals(8, search4.key());
     }
 }
