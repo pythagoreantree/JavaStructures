@@ -12,12 +12,12 @@ public class BinarySearchTree<T> implements TreeI<T> {
     @Override
     public TreeNode<T> search(T key) {
         TreeNode node = root;
-        while (node != null && node.key != key){
-            Comparable<T> nkey = (Comparable) node.key;
+        while (node != null && node.key() != key){
+            Comparable<T> nkey = (Comparable) node.key();
             if (nkey.compareTo(key) > 0)
-                node = node.left;
+                node = node.left();
             else
-                node = node.right;
+                node = node.right();
         }
         return node;
     }
@@ -35,11 +35,11 @@ public class BinarySearchTree<T> implements TreeI<T> {
             TreeNode leaf = new TreeNode(key);
             return leaf;
         }
-        Comparable<T> nkey = (Comparable) node.key;
+        Comparable<T> nkey = (Comparable) node.key();
         if (nkey.compareTo(key) > 0) {
-            node.left = add(node.left, key);
+            node.setLeft(add(node.left(), key));
         } else {
-            node.right = add(node.right, key);
+            node.setRight(add(node.right(), key));
         }
         return node;
     }
@@ -56,23 +56,23 @@ public class BinarySearchTree<T> implements TreeI<T> {
         if (node == null)
             return null;
 
-        Comparable<T> nkey = (Comparable) node.key;
+        Comparable<T> nkey = (Comparable) node.key();
         if (nkey.compareTo(key) > 0){
-            node.left = remove(node.left, key);
+            node.setLeft(remove(node.left(), key));
         } else if (nkey.compareTo(key) < 0) {
-            node.right = remove(node.right, key);
+            node.setRight(remove(node.right(), key));
         } else {
-            if (node.right == null)
-                return node.left;
-            else if (node.left == null)
-                return node.right;
+            if (node.right() == null)
+                return node.left();
+            else if (node.left() == null)
+                return node.right();
 
-            TreeNode<T> inOrderSuccessor = node.right;
-            while (inOrderSuccessor.left != null)
-                inOrderSuccessor = inOrderSuccessor.left;
+            TreeNode<T> inOrderSuccessor = node.right();
+            while (inOrderSuccessor.left() != null)
+                inOrderSuccessor = inOrderSuccessor.left();
 
-            node.key = inOrderSuccessor.key;
-            node.right = remove(node.right, inOrderSuccessor.key);
+            node.setKey(inOrderSuccessor.key());
+            node.setRight(remove(node.right(), inOrderSuccessor.key()));
         }
         return node;
     }

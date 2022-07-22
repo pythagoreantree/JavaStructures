@@ -2,7 +2,7 @@ package util.collections.implementations.trees;
 
 import util.collections.interfaces.tree.TreeNodeI;
 
-public class AVLNode<T> extends TreeNode<T>{
+public class AVLNode<T> extends TreeNode<T> {
 
     private int height = 1;
 
@@ -30,12 +30,12 @@ public class AVLNode<T> extends TreeNode<T>{
 
     @Override
     public AVLNode<T> left() {
-        return (AVLNode<T>) left;
+        return (AVLNode<T>) super.left();
     }
 
     @Override
     public AVLNode<T> right() {
-        return (AVLNode<T>) right;
+        return (AVLNode<T>) super.right();
     }
 
 }

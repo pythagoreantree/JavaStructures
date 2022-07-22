@@ -30,7 +30,7 @@ class AVLTreeTest {
         tree.add(50);
         tree.add(25);
         TreeNode ans = tree.search(30);
-        Assertions.assertEquals(30, ans.key);
+        Assertions.assertEquals(30, ans.key());
         ans = tree.search(1);
         Assertions.assertNull(ans);
     }

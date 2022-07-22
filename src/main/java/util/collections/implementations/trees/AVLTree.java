@@ -12,8 +12,8 @@ public class AVLTree<T> extends BinarySearchTree<T> {
         AVLNode<T> y = z.left();
         AVLNode<T> T2 = y.right();
 
-        y.right = z;
-        z.left = T2;
+        y.setRight(z);
+        z.setLeft(T2);
 
         z.setHeight(Math.max(height(z.left()), height(z.right())) + 1);
         y.setHeight(Math.max(height(y.left()), height(y.right())) + 1);
@@ -25,8 +25,8 @@ public class AVLTree<T> extends BinarySearchTree<T> {
         AVLNode<T> y = z.right();
         AVLNode<T> T2 = y.left();
 
-        y.left = z;
-        z.right = T2;
+        y.setLeft(z);
+        z.setRight(T2);
 
         z.setHeight(Math.max(height(z.left()), height(z.right())) + 1);
         y.setHeight(Math.max(height(y.left()), height(y.right())) + 1);
@@ -65,11 +65,11 @@ public class AVLTree<T> extends BinarySearchTree<T> {
         if (node == null)
             return new AVLNode(key);
 
-        Comparable<T> nkey = (Comparable) node.key;
+        Comparable<T> nkey = (Comparable) node.key();
         if (nkey.compareTo(key) > 0) //key < node.val
-            node.left = add(node.left(), key);
+            node.setLeft(add(node.left(), key));
         else if (nkey.compareTo(key) < 0) //key > node.val
-            node.right = add(node.right(), key);
+            node.setRight(add(node.right(), key));
         else // Duplicate keys not allowed
             return node;
 
@@ -79,28 +79,28 @@ public class AVLTree<T> extends BinarySearchTree<T> {
 
         // If this node becomes unbalanced, then there
         // are 4 cases Left Left Case
-        if (balance > 1 && node.left != null
-                && ((Comparable) node.left.key).compareTo(key) > 0) {
+        if (balance > 1 && node.left() != null
+                && ((Comparable) node.left().key()).compareTo(key) > 0) {
             return rightRotate(node);
         }
 
         // Right Right Case (+)
-        if (balance < -1 && node.right != null
-                && ((Comparable) node.right.key).compareTo(key) < 0) { //node.right.key < key
+        if (balance < -1 && node.right() != null
+                && ((Comparable) node.right().key()).compareTo(key) < 0) { //node.right.key < key
             return leftRotate(node);
         }
 
         // Left Right Case
-        if (balance > 1 && node.left != null
-                && ((Comparable) node.left.key).compareTo(key) < 0) {
-            node.left = leftRotate(node.left());
+        if (balance > 1 && node.left() != null
+                && ((Comparable) node.left().key()).compareTo(key) < 0) {
+            node.setLeft(leftRotate(node.left()));
             return rightRotate(node);
         }
 
         // Right Left Case (+)
-        if (balance < -1 && node.right != null
-                && ((Comparable) node.right.key).compareTo(key) > 0) { //node.right.key > key
-            node.right = rightRotate(node.right());
+        if (balance < -1 && node.right() != null
+                && ((Comparable) node.right().key()).compareTo(key) > 0) { //node.right.key > key
+            node.setRight(rightRotate(node.right()));
             return leftRotate(node);
         }
 
@@ -117,16 +117,17 @@ public class AVLTree<T> extends BinarySearchTree<T> {
         if (node == null)
             return node;
 
-        Comparable<T> nkey = (Comparable) node.key;
+        //I can return Comparable from key() or smth similar
+        Comparable<T> nkey = (Comparable) node.key();
         if (nkey.compareTo(key) > 0)
-            node.left = removeNode(node.left(), key);
+            node.setLeft(removeNode(node.left(), key));
         else if (nkey.compareTo(key) < 0)
-            node.right = removeNode(node.right(), key);
+            node.setRight(removeNode(node.right(), key));
         else {
             // node with only one child or no child
-            if ((node.left == null) || (node.right == null)) {
+            if ((node.left() == null) || (node.right() == null)) {
                 AVLNode<T> temp;
-                if (node.left == null)
+                if (node.left() == null)
                     temp = node.right();
                 else
                     temp = node.left();
@@ -139,8 +140,8 @@ public class AVLTree<T> extends BinarySearchTree<T> {
                     node = temp; // Copy the contents of the non-empty child
             } else {
                 AVLNode<T> temp = minValueNode(node.right());
-                node.key = temp.key;
-                node.right = removeNode(node.right(), temp.key);
+                node.setKey(temp.key());
+                node.setRight(removeNode(node.right(), temp.key()));
             }
         }
 
@@ -158,7 +159,7 @@ public class AVLTree<T> extends BinarySearchTree<T> {
 
         // Left Right Case
         if (balance > 1 && getBalance(node.left()) < 0) {
-            node.left = leftRotate(node.left());
+            node.setLeft(leftRotate(node.left()));
             return rightRotate(node);
         }
 
@@ -168,7 +169,7 @@ public class AVLTree<T> extends BinarySearchTree<T> {
 
         // Right Left Case
         if (balance < -1 && getBalance(node.right()) > 0) {
-            node.right = rightRotate(node.right());
+            node.setRight(rightRotate(node.right()));
             return leftRotate(node);
         }
 

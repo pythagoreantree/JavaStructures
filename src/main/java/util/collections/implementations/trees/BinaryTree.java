@@ -30,15 +30,15 @@ public class BinaryTree<T> implements TreeI<T> {
         if (node == null)
             return null;
 
-        if (node.key == key){
+        if (node.key() == key){
             return node;
         }
-        TreeNode left = search(node.left, key);
-        TreeNode right = search(node.right, key);
+        TreeNode left = search(node.left(), key);
+        TreeNode right = search(node.right(), key);
 
-        if (left != null && left.key == key)
+        if (left != null && left.key() == key)
             return left;
-        if (right != null && right.key == key)
+        if (right != null && right.key() == key)
             return right;
         return null;
     }
@@ -58,18 +58,18 @@ public class BinaryTree<T> implements TreeI<T> {
 
         while (!q.isEmpty()) {
             TreeNode<T> node = q.poll();
-            if (node.left == null) {
-                node.left = new TreeNode<T>(key);
+            if (node.left() == null) {
+                node.setLeft(new TreeNode<T>(key));
                 break;
             } else {
-                q.add(node.left);
+                q.add(node.left());
             }
 
-            if (node.right == null) {
-                node.right = new TreeNode<T>(key);
+            if (node.right() == null) {
+                node.setRight(new TreeNode<T>(key));
                 break;
             } else {
-                q.add(node.right);
+                q.add(node.right());
             }
         }
     }
@@ -83,8 +83,8 @@ public class BinaryTree<T> implements TreeI<T> {
         if (root == null)
             return;
 
-        if (root.left == null && root.right == null) {
-            if (root.key == key) {
+        if (root.left() == null && root.right() == null) {
+            if (root.key() == key) {
                 root = null;
                 return;
             } else {
@@ -102,27 +102,27 @@ public class BinaryTree<T> implements TreeI<T> {
         while (!q.isEmpty()) {
             node = q.poll();
 
-            if (node.key == key)
+            if (node.key() == key)
                 keyNode = node;
 
-            if (node.left != null) {
+            if (node.left() != null) {
                 parent = node;
-                q.add(node.left);
+                q.add(node.left());
             }
 
-            if (node.right != null){
+            if (node.right() != null){
                 parent = node;
-                q.add(node.right);
+                q.add(node.right());
             }
         }
 
         //here may be I need an exception if keyNode is not found
         if (keyNode != null) {
-            keyNode.key = node.key;
-            if (parent.left == node)
-                parent.left = null;
-            else if (parent.right == node)
-                parent.right = null;
+            keyNode.setKey(node.key());
+            if (parent.left() == node)
+                parent.setLeft(null);
+            else if (parent.right() == node)
+                parent.setRight(null);
 
         }
     }

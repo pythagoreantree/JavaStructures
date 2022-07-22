@@ -8,7 +8,7 @@ public class SplayTree<T> extends BinarySearchTree<T> {
     }
 
     private TreeNode<T> rightRotate(TreeNode<T> z) {
-        TreeNode<T> y = z.left;
+        TreeNode<T> y = z.left();
         z.left = y.right;
         y.right = z;
         return y;

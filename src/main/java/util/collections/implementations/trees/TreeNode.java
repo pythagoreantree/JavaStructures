@@ -4,9 +4,9 @@ import util.collections.interfaces.tree.TreeNodeI;
 
 public class TreeNode<T> implements TreeNodeI<T> {
 
-    public T key;
-    public TreeNode<T> left;
-    public TreeNode<T> right;
+    private T key;
+    private TreeNode<T> left;
+    private TreeNode<T> right;
 
     TreeNode() {}
 
@@ -20,14 +20,30 @@ public class TreeNode<T> implements TreeNodeI<T> {
         this.right = right;
     }
 
-    @Override
-    public TreeNodeI<T> left() {
-        return left;
+    public T key() {
+        return key;
+    }
+
+    public void setKey(T key) {
+        this.key = key;
     }
 
     @Override
-    public TreeNodeI<T> right() {
+    public TreeNode<T> left() {
+        return left;
+    }
+
+    public void setLeft(TreeNode<T> left) {
+        this.left = left;
+    }
+
+    @Override
+    public TreeNode<T> right() {
         return right;
+    }
+
+    public void setRight(TreeNode<T> right) {
+        this.right = right;
     }
 
     @Override
