@@ -28,9 +28,9 @@ public class RedBlackTree<T> extends BinarySearchTree<T> {
             root = newNode;
             return;
         } else if (newkey.compareTo(newNode.key()) < 0){
-            nodeParent.left = newNode;
+            nodeParent.setLeft(newNode);
         } else {
-            nodeParent.right = newNode;
+            nodeParent.setRight(newNode);
         }
         newNode.setColor(RED);
         insertFixup(newNode);
