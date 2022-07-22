@@ -2,73 +2,78 @@ package util.collections.implementations.trees;
 
 public class AVLTree<T> extends BinarySearchTree<T> {
 
-    private int height(TreeNode<T> node) {
+    private int height(AVLNode<T> node) {
         if (node == null)
             return 0;
-        return node.height;
+        return node.height();
     }
 
-    private TreeNode<T> rightRotate(TreeNode<T> z) {
-        TreeNode<T> y = z.left;
-        TreeNode<T> T2 = y.right;
+    private AVLNode<T> rightRotate(AVLNode<T> z) {
+        AVLNode<T> y = z.left();
+        AVLNode<T> T2 = y.right();
 
         y.right = z;
         z.left = T2;
 
-        z.height = Math.max(height(z.left), height(z.right)) + 1;
-        y.height = Math.max(height(y.left), height(y.right)) + 1;
+        z.setHeight(Math.max(height(z.left()), height(z.right())) + 1);
+        y.setHeight(Math.max(height(y.left()), height(y.right())) + 1);
 
         return y;
     }
 
-    private TreeNode<T> leftRotate(TreeNode<T> z) {
-        TreeNode<T> y = z.right;
-        TreeNode<T> T2 = y.left;
+    private AVLNode<T> leftRotate(AVLNode<T> z) {
+        AVLNode<T> y = z.right();
+        AVLNode<T> T2 = y.left();
 
         y.left = z;
         z.right = T2;
 
-        z.height = Math.max(height(z.left), height(z.right)) + 1;
-        y.height = Math.max(height(y.left), height(y.right)) + 1;
+        z.setHeight(Math.max(height(z.left()), height(z.right())) + 1);
+        y.setHeight(Math.max(height(y.left()), height(y.right())) + 1);
 
         return y;
     }
 
-    private int getBalance(TreeNode<T> node) {
+    private int getBalance(AVLNode<T> node) {
         if (node == null)
             return 0;
 
-        return height(node.left) - height(node.right);
+        return height(node.left()) - height(node.right());
     }
 
-    private TreeNode<T> minValueNode(TreeNode<T> node) {
-        TreeNode<T> current = node;
+    private AVLNode<T> minValueNode(AVLNode<T> node) {
+        AVLNode<T> current = node;
 
         /* loop down to find the leftmost leaf */
-        while (current.left != null)
-            current = current.left;
+        while (current.left() != null)
+            current = current.left();
 
         return current;
     }
-    
-    public void add(T key) {
-        root = add(root, key);
+
+    @Override
+    public AVLNode<T> getRoot() {
+        return (AVLNode<T>) super.getRoot();
     }
 
-    private TreeNode<T> add(TreeNode<T> node, T key) {
+    public void add(T key) {
+        root = add(getRoot(), key);
+    }
+
+    private AVLNode<T> add(AVLNode<T> node, T key) {
 
         if (node == null)
-            return new TreeNode(key);
+            return new AVLNode(key);
 
         Comparable<T> nkey = (Comparable) node.key;
         if (nkey.compareTo(key) > 0) //key < node.val
-            node.left = add(node.left, key);
+            node.left = add(node.left(), key);
         else if (nkey.compareTo(key) < 0) //key > node.val
-            node.right = add(node.right, key);
+            node.right = add(node.right(), key);
         else // Duplicate keys not allowed
             return node;
 
-        node.height = 1 + Math.max(height(node.left), height(node.right));
+        node.setHeight(1 + Math.max(height(node.left()), height(node.right())));
 
         int balance = getBalance(node);
 
@@ -88,14 +93,14 @@ public class AVLTree<T> extends BinarySearchTree<T> {
         // Left Right Case
         if (balance > 1 && node.left != null
                 && ((Comparable) node.left.key).compareTo(key) < 0) {
-            node.left = leftRotate(node.left);
+            node.left = leftRotate(node.left());
             return rightRotate(node);
         }
 
         // Right Left Case (+)
         if (balance < -1 && node.right != null
                 && ((Comparable) node.right.key).compareTo(key) > 0) { //node.right.key > key
-            node.right = rightRotate(node.right);
+            node.right = rightRotate(node.right());
             return leftRotate(node);
         }
 
@@ -104,27 +109,27 @@ public class AVLTree<T> extends BinarySearchTree<T> {
 
     @Override
     public void remove(T key){
-        root = removeNode(root, key);
+        root = removeNode(getRoot(), key);
     }
 
-    public TreeNode<T> removeNode(TreeNode<T> node, T key) {
+    public AVLNode<T> removeNode(AVLNode<T> node, T key) {
 
         if (node == null)
             return node;
 
         Comparable<T> nkey = (Comparable) node.key;
         if (nkey.compareTo(key) > 0)
-            node.left = removeNode(node.left, key);
+            node.left = removeNode(node.left(), key);
         else if (nkey.compareTo(key) < 0)
-            node.right = removeNode(node.right, key);
+            node.right = removeNode(node.right(), key);
         else {
             // node with only one child or no child
             if ((node.left == null) || (node.right == null)) {
-                TreeNode<T> temp;
+                AVLNode<T> temp;
                 if (node.left == null)
-                    temp = node.right;
+                    temp = node.right();
                 else
-                    temp = node.left;
+                    temp = node.left();
 
                 // No child case
                 if (temp == null) {
@@ -133,36 +138,37 @@ public class AVLTree<T> extends BinarySearchTree<T> {
                 } else // One child case
                     node = temp; // Copy the contents of the non-empty child
             } else {
-                TreeNode<T> temp = minValueNode(node.right);
+                AVLNode<T> temp = minValueNode(node.right());
                 node.key = temp.key;
-                node.right = removeNode(node.right, temp.key);
+                node.right = removeNode(node.right(), temp.key);
             }
         }
 
         if (node == null)
             return node;
 
-        node.height = Math.max(height(node.left), height(node.right)) + 1;
+
+        node.setHeight(Math.max(height(node.left()), height(node.right())) + 1);
 
         int balance = getBalance(node);
 
         // Left Left Case
-        if (balance > 1 && getBalance(node.left) >= 0)
+        if (balance > 1 && getBalance(node.left()) >= 0)
             return rightRotate(node);
 
         // Left Right Case
-        if (balance > 1 && getBalance(node.left) < 0) {
-            node.left = leftRotate(node.left);
+        if (balance > 1 && getBalance(node.left()) < 0) {
+            node.left = leftRotate(node.left());
             return rightRotate(node);
         }
 
         // Right Right Case
-        if (balance < -1 && getBalance(node.right) <= 0)
+        if (balance < -1 && getBalance(node.right()) <= 0)
             return leftRotate(node);
 
         // Right Left Case
-        if (balance < -1 && getBalance(node.right) > 0) {
-            node.right = rightRotate(node.right);
+        if (balance < -1 && getBalance(node.right()) > 0) {
+            node.right = rightRotate(node.right());
             return leftRotate(node);
         }
 

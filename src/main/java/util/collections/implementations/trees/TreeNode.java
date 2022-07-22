@@ -1,15 +1,12 @@
 package util.collections.implementations.trees;
 
-public class TreeNode<T> {
+import util.collections.interfaces.tree.TreeNodeI;
+
+public class TreeNode<T> implements TreeNodeI<T> {
 
     public T key;
     public TreeNode<T> left;
     public TreeNode<T> right;
-
-    public TreeNode<T> parent; //for RB-Trees
-
-    public int height = 1; //temporary measure to standartise the interface
-    public byte color = 0; //for RB-trees
 
     TreeNode() {}
 
@@ -21,5 +18,20 @@ public class TreeNode<T> {
         this.key = val;
         this.left = left;
         this.right = right;
+    }
+
+    @Override
+    public TreeNodeI<T> left() {
+        return left;
+    }
+
+    @Override
+    public TreeNodeI<T> right() {
+        return right;
+    }
+
+    @Override
+    public TreeNodeI<T> parent() {
+        return null;
     }
 }

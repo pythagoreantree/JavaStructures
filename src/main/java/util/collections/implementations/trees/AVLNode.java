@@ -1,8 +1,10 @@
 package util.collections.implementations.trees;
 
+import util.collections.interfaces.tree.TreeNodeI;
+
 public class AVLNode<T> extends TreeNode<T>{
 
-    public int height = 1;
+    private int height = 1;
 
     public AVLNode() {}
 
@@ -14,4 +16,26 @@ public class AVLNode<T> extends TreeNode<T>{
         super(val);
         this.height = height;
     }
+
+    public int height() {
+        return height;
+    }
+    public int getHeight() {
+        return height;
+    }
+
+    public void setHeight(int height) {
+        this.height = height;
+    }
+
+    @Override
+    public AVLNode<T> left() {
+        return (AVLNode<T>) left;
+    }
+
+    @Override
+    public AVLNode<T> right() {
+        return (AVLNode<T>) right;
+    }
+
 }
