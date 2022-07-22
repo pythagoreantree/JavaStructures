@@ -1,9 +1,9 @@
 package util.collections.implementations.trees;
 
-public class RedBlackTree<T> extends BinarySearchTree<T> {
+import static util.collections.implementations.trees.RedBlackNode.BLACK;
+import static util.collections.implementations.trees.RedBlackNode.RED;
 
-    private static final byte RED = Byte.valueOf("1");
-    private static final byte BLACK = Byte.valueOf("0");
+public class RedBlackTree<T> extends BinarySearchTree<T> {
 
     private final BlackNode<T> endNode = new BlackNode();
 

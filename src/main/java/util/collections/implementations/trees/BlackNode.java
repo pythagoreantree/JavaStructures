@@ -3,7 +3,8 @@ package util.collections.implementations.trees;
 public final class BlackNode<T> extends RedBlackNode<T>{
 
     public BlackNode() {
-        this.color = 0;
+        super();
+        setColor(RedBlackNode.BLACK);
         setLeft(null);
         setRight(null);
     }

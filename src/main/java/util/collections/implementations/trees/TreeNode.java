@@ -8,7 +8,10 @@ public class TreeNode<T> implements TreeNodeI<T> {
     protected TreeNode<T> left;
     protected TreeNode<T> right;
 
-    TreeNode() {}
+    TreeNode() {
+        left = null;
+        right = null;
+    }
 
     TreeNode(T val) {
         this.key = val;
