@@ -7,27 +7,29 @@ public class RedBlackTree<T> extends BinarySearchTree<T> {
 
     private final BlackNode<T> endNode = new BlackNode();
 
-    public RedBlackTree() {}
+    public RedBlackTree() {
+    }
 
     /*
-    * O(h), h <= 2log(n+1)
-    * */
-    public void add(T key){
+     * O(h), h <= 2log(n+1)
+     * */
+    public void add(T key) {
         RedBlackNode<T> newNode = new RedBlackNode<>(key, endNode, endNode);
         RedBlackNode<T> nodeParent = endNode;
         RedBlackNode<T> nodeToInsert = getRoot();
         Comparable<T> newkey = (Comparable) newNode.key();
-        while (nodeToInsert != endNode){
+        while (nodeToInsert != endNode) {
             nodeParent = nodeToInsert;
             if (newkey.compareTo(nodeToInsert.key()) < 0)
                 nodeToInsert = nodeToInsert.left();
-            else nodeToInsert = nodeToInsert.right();
+            else
+                nodeToInsert = nodeToInsert.right();
         }
         newNode.setParent(nodeParent);
         if (nodeParent == endNode) {
             root = newNode;
             return;
-        } else if (newkey.compareTo(newNode.key()) < 0){
+        } else if (newkey.compareTo(newNode.key()) < 0) {
             nodeParent.setLeft(newNode);
         } else {
             nodeParent.setRight(newNode);
@@ -48,11 +50,11 @@ public class RedBlackTree<T> extends BinarySearchTree<T> {
 
         while (parent.color() == RED) {
             //does GP exists?
-            if (parent == parent.parent().left()){
+            if (parent == parent.parent().left()) {
                 RedBlackNode<T> uncle = parent.parent().right();
                 //if uncle == null
                 if (uncle == null || uncle.color() == BLACK) {
-                    if (node == parent.right()){
+                    if (node == parent.right()) {
                         parent.parent().setLeft(leftRotate(parent));
                     }
                     swapColors(parent.parent().left(), parent.parent());
@@ -64,17 +66,17 @@ public class RedBlackTree<T> extends BinarySearchTree<T> {
                     parent.parent().setColor(RED);
                     node = node.parent().parent();
                 }
-            } else if (parent == parent.parent().right()){
+            } else if (parent == parent.parent().right()) {
                 RedBlackNode<T> uncle = parent.parent().left();
                 //if uncle == null
                 if (uncle == null || uncle.color() == BLACK) {
-                    if (node == parent.left()){
+                    if (node == parent.left()) {
                         parent.parent().setRight(rightRotate(parent));
                     }
                     swapColors(parent.parent(), parent.parent().right());
                     leftRotate(parent.parent());
                     break;
-                } else if (uncle.color() == RED){
+                } else if (uncle.color() == RED) {
                     //incapsulate this part into function
                     parent.setColor(BLACK);
                     uncle.setColor(BLACK);
@@ -124,17 +126,17 @@ public class RedBlackTree<T> extends BinarySearchTree<T> {
         RedBlackNode<T> y = keyNode;
         RedBlackNode<T> x = endNode;
         Byte yColor = y.color();
-        if (keyNode.left() == endNode){
+        if (keyNode.left() == endNode) {
             x = keyNode.right();
             redirect(keyNode, keyNode.right());
-        } else if (keyNode.right() == endNode){
+        } else if (keyNode.right() == endNode) {
             x = keyNode.left();
             redirect(keyNode, keyNode.left());
         } else {
             y = getMinimum(keyNode.right());
             yColor = y.color();
             x = y.right();
-            if (y.parent() == keyNode){
+            if (y.parent() == keyNode) {
                 x.setParent(y);
             } else {
                 redirect(y, y.right());
@@ -153,24 +155,72 @@ public class RedBlackTree<T> extends BinarySearchTree<T> {
     }
 
     private RedBlackNode<T> getMinimum(RedBlackNode<T> node) {
-        while (node != endNode){
+        while (node != endNode) {
             node = node.left();
         }
         return node;
     }
 
     private void removeFixup(RedBlackNode<T> x) {
-        // TODO: improve balances
+        while (x != getRoot() && x.color() == BLACK) {
+            if (x == x.parent().left()) {
+                RedBlackNode<T> w = x.parent().right();
+                if (w.color() == RED) {
+                    w.setColor(BLACK);
+                    x.parent().setColor(RED);
+                    leftRotate(x.parent());
+                    w = x.parent().right();
+                }
+                //now w is black
+                if (w.left().color() == BLACK && w.right().color() == BLACK) {
+                    w.setColor(RED);
+                    x = x.parent();
+                } else if (w.right().color() == BLACK) {
+                    w.left().setColor(BLACK);
+                    w.setColor(RED);
+                    rightRotate(w);
+                    w = x.parent().right();
+                }
+                w.setColor(x.parent().color());
+                x.parent().setColor(BLACK);
+                w.right().setColor(BLACK);
+                leftRotate(x.parent());
+                x = getRoot();
+            } else if (x == x.parent().right()) {
+                RedBlackNode<T> w = x.parent().left();
+                if (w.color() == RED) {
+                    w.setColor(BLACK);
+                    x.parent().setColor(RED);
+                    rightRotate(x.parent());
+                    w = x.parent().left();
+                }
+                if (w.left().color() == BLACK && w.right().color() == BLACK) {
+                    w.setColor(RED);
+                    x = x.parent();
+                } else if (w.left().color() == BLACK) {
+                    w.right().setColor(BLACK);
+                    w.setColor(RED);
+                    leftRotate(w);
+                    w = x.parent().left();
+                }
+                w.setColor(x.parent().color());
+                x.parent().setColor(BLACK);
+                w.left().setColor(BLACK);
+                rightRotate(x.parent());
+                x = getRoot();
+            }
+        }
+        x.setColor(BLACK);
     }
 
-    private void redirect(RedBlackNode<T> u, RedBlackNode<T> v){
-        if (u.parent() == endNode){
+    private void redirect(RedBlackNode<T> u, RedBlackNode<T> v) {
+        if (u.parent() == endNode) {
             setRoot(v);
             return;
         }
-        if (u == u.parent().left()){
+        if (u == u.parent().left()) {
             u.parent().setLeft(v);
-        } else if (u == u.parent().right()){
+        } else if (u == u.parent().right()) {
             u.parent().setRight(v);
         }
         v.setParent(u.parent());
