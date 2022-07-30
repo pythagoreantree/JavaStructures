@@ -5,8 +5,8 @@ import util.collections.interfaces.tree.TreeNodeI;
 public class TreeNode<T> implements TreeNodeI<T> {
 
     private T key;
-    protected TreeNode<T> left;
-    protected TreeNode<T> right;
+    private TreeNodeI<T> left;
+    private TreeNodeI<T> right;
 
     TreeNode() {
         left = null;
@@ -17,7 +17,7 @@ public class TreeNode<T> implements TreeNodeI<T> {
         this.key = val;
     }
 
-    TreeNode(T val, TreeNode left, TreeNode right) {
+    TreeNode(T val, TreeNodeI<T> left, TreeNodeI<T> right) {
         this.key = val;
         this.left = left;
         this.right = right;
@@ -33,24 +33,26 @@ public class TreeNode<T> implements TreeNodeI<T> {
 
     @Override
     public TreeNode<T> left() {
-        return left;
-    }
-
-    public void setLeft(TreeNode<T> left) {
-        this.left = left;
+        return (TreeNode<T>) left;
     }
 
     @Override
     public TreeNode<T> right() {
-        return right;
+        return (TreeNode<T>) right;
     }
 
-    public void setRight(TreeNode<T> right) {
+    @Override
+    public void setRight(TreeNodeI<T> right) {
         this.right = right;
     }
 
     @Override
     public TreeNodeI<T> parent() {
         return null;
+    }
+
+    @Override
+    public void setLeft(TreeNodeI<T> left) {
+        this.left = left;
     }
 }

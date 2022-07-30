@@ -115,6 +115,73 @@ public class RedBlackTree<T> extends BinarySearchTree<T> {
     }
 
     @Override
+    public void remove(T key) {
+        RedBlackNode<T> nodeToDelete = (RedBlackNode<T>) search(key);
+        remove(getRoot(), nodeToDelete);
+    }
+
+    public RedBlackNode<T> remove(RedBlackNode<T> node, RedBlackNode<T> keyNode) {
+        RedBlackNode<T> y = keyNode;
+        RedBlackNode<T> x = endNode;
+        Byte yColor = y.color();
+        if (keyNode.left() == endNode){
+            x = keyNode.right();
+            redirect(keyNode, keyNode.right());
+        } else if (keyNode.right() == endNode){
+            x = keyNode.left();
+            redirect(keyNode, keyNode.left());
+        } else {
+            y = getMinimum(keyNode.right());
+            yColor = y.color();
+            x = y.right();
+            if (y.parent() == keyNode){
+                x.setParent(y);
+            } else {
+                redirect(y, y.right());
+                y.setRight(keyNode.right());
+                y.right().setParent(y);
+            }
+            redirect(keyNode, y);
+            y.setLeft(keyNode.left());
+            y.left().setParent(y);
+            y.setColor(keyNode.color());
+        }
+        if (yColor == BLACK) {
+            removeFixup(x);
+        }
+        return node;
+    }
+
+    private RedBlackNode<T> getMinimum(RedBlackNode<T> node) {
+        while (node != endNode){
+            node = node.left();
+        }
+        return node;
+    }
+
+    private void removeFixup(RedBlackNode<T> x) {
+        // TODO: improve balances
+    }
+
+    private void redirect(RedBlackNode<T> u, RedBlackNode<T> v){
+        if (u.parent() == endNode){
+            setRoot(v);
+            return;
+        }
+        if (u == u.parent().left()){
+            u.parent().setLeft(v);
+        } else if (u == u.parent().right()){
+            u.parent().setRight(v);
+        }
+        v.setParent(u.parent());
+        u.setParent(endNode);
+    }
+
+    public void setRoot(RedBlackNode<T> v) {
+        this.root = v;
+    }
+
+    @Override
     public RedBlackNode<T> getRoot() {
         return (RedBlackNode<T>) super.getRoot();
     }

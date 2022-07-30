@@ -1,5 +1,7 @@
 package util.collections.implementations.trees;
 
+import util.collections.interfaces.tree.TreeNodeI;
+
 public class RedBlackNode<T> extends TreeNode<T> {
 
     public static final byte RED = Byte.valueOf("1");
@@ -13,10 +15,8 @@ public class RedBlackNode<T> extends TreeNode<T> {
         parent = null;
     }
 
-    RedBlackNode(T key, TreeNode left, TreeNode right) {
-        super.setKey(key);
-        this.left = left;
-        this.right = right;
+    RedBlackNode(T key, TreeNodeI<T> left, TreeNodeI<T> right) {
+        super(key, left, right);
     }
 
     @Override
@@ -24,17 +24,9 @@ public class RedBlackNode<T> extends TreeNode<T> {
         return (RedBlackNode<T>) super.left();
     }
 
-    public void setLeft(RedBlackNode<T> left) {
-        this.left = left;
-    }
-
     @Override
     public RedBlackNode<T> right() {
         return (RedBlackNode<T>) super.right();
-    }
-
-    public void setRight(RedBlackNode<T> right) {
-        this.right = right;
     }
 
     @Override
