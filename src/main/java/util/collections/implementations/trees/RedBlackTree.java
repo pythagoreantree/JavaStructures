@@ -175,17 +175,19 @@ public class RedBlackTree<T> extends BinarySearchTree<T> {
                 if (w.left().color() == BLACK && w.right().color() == BLACK) {
                     w.setColor(RED);
                     x = x.parent();
-                } else if (w.right().color() == BLACK) {
-                    w.left().setColor(BLACK);
-                    w.setColor(RED);
-                    rightRotate(w);
-                    w = x.parent().right();
+                } else {
+                    if (w.right().color() == BLACK) {
+                        w.left().setColor(BLACK);
+                        w.setColor(RED);
+                        rightRotate(w);
+                        w = x.parent().right();
+                    }
+                    w.setColor(x.parent().color());
+                    x.parent().setColor(BLACK);
+                    w.right().setColor(BLACK);
+                    leftRotate(x.parent());
+                    x = getRoot();
                 }
-                w.setColor(x.parent().color());
-                x.parent().setColor(BLACK);
-                w.right().setColor(BLACK);
-                leftRotate(x.parent());
-                x = getRoot();
             } else if (x == x.parent().right()) {
                 RedBlackNode<T> w = x.parent().left();
                 if (w.color() == RED) {
@@ -197,17 +199,19 @@ public class RedBlackTree<T> extends BinarySearchTree<T> {
                 if (w.left().color() == BLACK && w.right().color() == BLACK) {
                     w.setColor(RED);
                     x = x.parent();
-                } else if (w.left().color() == BLACK) {
-                    w.right().setColor(BLACK);
-                    w.setColor(RED);
-                    leftRotate(w);
-                    w = x.parent().left();
+                } else {
+                    if (w.left().color() == BLACK) {
+                        w.right().setColor(BLACK);
+                        w.setColor(RED);
+                        leftRotate(w);
+                        w = x.parent().left();
+                    }
+                    w.setColor(x.parent().color());
+                    x.parent().setColor(BLACK);
+                    w.left().setColor(BLACK);
+                    rightRotate(x.parent());
+                    x = getRoot();
                 }
-                w.setColor(x.parent().color());
-                x.parent().setColor(BLACK);
-                w.left().setColor(BLACK);
-                rightRotate(x.parent());
-                x = getRoot();
             }
         }
         x.setColor(BLACK);
