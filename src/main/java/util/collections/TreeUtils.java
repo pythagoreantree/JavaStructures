@@ -5,10 +5,7 @@ import util.collections.interfaces.tree.TreeI;
 import util.collections.interfaces.tree.TreeNodeI;
 
 import java.lang.reflect.Array;
-import java.util.ArrayDeque;
-import java.util.ArrayList;
-import java.util.Deque;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class TreeUtils {
@@ -19,7 +16,7 @@ public class TreeUtils {
     public static <T> void printInOrderTraversal(TreeI<T> tree) {
         ArrayList<T> tList = new ArrayList<>();
         inOrderTraversal(tree.getRoot(), tList);
-        List<String> nodes = tList.stream().map(o -> o.toString()).collect(Collectors.toList());
+        List<String> nodes = tList.stream().filter(Objects::nonNull).map(o -> o.toString()).collect(Collectors.toList());
         System.out.println(String.join(" ", nodes));
     }
 

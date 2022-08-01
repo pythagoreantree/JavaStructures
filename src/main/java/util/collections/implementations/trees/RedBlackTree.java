@@ -62,7 +62,18 @@ public class RedBlackTree<T> extends BinarySearchTree<T> {
                         parent.parent().setLeft(leftRotate(parent));
                     }
                     swapColors(parent.parent().left(), parent.parent());
-                    redirect(parent.parent(), rightRotate(parent.parent()));
+                    RedBlackNode<T> ggParent = parent.parent().parent();
+                    if (ggParent == endNode){
+                        root = leftRotate(parent.parent());
+                    } else if (ggParent.left() == parent.parent()){
+                        RedBlackNode<T> rotNode = rightRotate(parent.parent());
+                        ggParent.setLeft(rotNode);
+                        rotNode.setParent(ggParent);
+                    } else if (ggParent.right() == parent.parent()){
+                        RedBlackNode<T> rotNode = rightRotate(parent.parent());
+                        ggParent.setRight(rotNode);
+                        rotNode.setParent(ggParent);
+                    }
                     break;
                 } else if (uncle.color() == RED) {
                     parent.setColor(BLACK);
@@ -78,7 +89,18 @@ public class RedBlackTree<T> extends BinarySearchTree<T> {
                         parent.parent().setRight(rightRotate(parent));
                     }
                     swapColors(parent.parent(), parent.parent().right());
-                    redirect(parent.parent(), leftRotate(parent.parent()));
+                    RedBlackNode<T> ggParent = parent.parent().parent();
+                    if (ggParent == endNode){
+                        root = leftRotate(parent.parent());
+                    } else if (ggParent.left() == parent.parent()){
+                        RedBlackNode<T> rotNode = leftRotate(parent.parent());
+                        ggParent.setLeft(rotNode);
+                        rotNode.setParent(ggParent);
+                    } else if (ggParent.right() == parent.parent()){
+                        RedBlackNode<T> rotNode = leftRotate(parent.parent());
+                        ggParent.setRight(rotNode);
+                        rotNode.setParent(ggParent);
+                    }
                     break;
                 } else if (uncle.color() == RED) {
                     //incapsulate this part into function
@@ -102,20 +124,26 @@ public class RedBlackTree<T> extends BinarySearchTree<T> {
 
     private RedBlackNode<T> leftRotate(RedBlackNode<T> z) {
         RedBlackNode<T> y = z.right();
-        RedBlackNode<T> T2 = y.left();
+        RedBlackNode<T> leftTree = y.left();
 
         y.setLeft(z);
-        z.setRight(T2);
+        z.setParent(y);
+
+        z.setRight(leftTree);
+        leftTree.setParent(z);
 
         return y;
     }
 
     private RedBlackNode<T> rightRotate(RedBlackNode<T> z) {
         RedBlackNode<T> y = z.left();
-        RedBlackNode<T> T2 = y.right();
+        RedBlackNode<T> rightTree = y.right();
 
         y.setRight(z);
-        z.setLeft(T2);
+        z.setParent(y);
+
+        z.setLeft(rightTree);
+        rightTree.setParent(z);
 
         return y;
     }
