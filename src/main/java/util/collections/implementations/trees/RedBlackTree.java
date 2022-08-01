@@ -34,9 +34,7 @@ public class RedBlackTree<T> extends BinarySearchTree<T> {
             setRoot(redBlackNode);
             return;
         }
-
-        T parentKey = nodeParent.key();
-        if (newkey.compareTo(parentKey) < 0) {
+        if (newkey.compareTo(nodeParent.key()) < 0) {
             nodeParent.setLeft(redBlackNode);
         } else {
             nodeParent.setRight(redBlackNode);
