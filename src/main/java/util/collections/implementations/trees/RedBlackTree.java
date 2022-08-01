@@ -14,10 +14,14 @@ public class RedBlackTree<T> extends BinarySearchTree<T> {
      * O(h), h <= 2log(n+1)
      * */
     public void add(T key) {
-        RedBlackNode<T> newNode = new RedBlackNode<>(key, endNode, endNode);
+        RedBlackNode<T> keyNode = new RedBlackNode<>(key, endNode, endNode);
+        add(keyNode);
+    }
+
+    private void add(RedBlackNode<T> redBlackNode){
         RedBlackNode<T> nodeParent = endNode;
         RedBlackNode<T> nodeToInsert = getRoot();
-        Comparable<T> newkey = (Comparable) newNode.key();
+        Comparable<T> newkey = (Comparable) redBlackNode.key();
         while (nodeToInsert != endNode) {
             nodeParent = nodeToInsert;
             if (newkey.compareTo(nodeToInsert.key()) < 0)
@@ -25,17 +29,17 @@ public class RedBlackTree<T> extends BinarySearchTree<T> {
             else
                 nodeToInsert = nodeToInsert.right();
         }
-        newNode.setParent(nodeParent);
-        if (nodeParent == endNode) {
-            root = newNode;
+        redBlackNode.setParent(nodeParent);
+        if (getRoot() == endNode) {
+            root = redBlackNode;
             return;
-        } else if (newkey.compareTo(newNode.key()) < 0) {
-            nodeParent.setLeft(newNode);
+        } else if (newkey.compareTo(redBlackNode.key()) < 0) {
+            nodeParent.setLeft(redBlackNode);
         } else {
-            nodeParent.setRight(newNode);
+            nodeParent.setRight(redBlackNode);
         }
-        newNode.setColor(RED);
-        insertFixup(newNode);
+        redBlackNode.setColor(RED);
+        insertFixup(redBlackNode);
     }
 
     private void insertFixup(RedBlackNode<T> node) {
@@ -53,12 +57,12 @@ public class RedBlackTree<T> extends BinarySearchTree<T> {
             if (parent == parent.parent().left()) {
                 RedBlackNode<T> uncle = parent.parent().right();
                 //if uncle == null
-                if (uncle == null || uncle.color() == BLACK) {
+                if (uncle == endNode || uncle.color() == BLACK) {
                     if (node == parent.right()) {
                         parent.parent().setLeft(leftRotate(parent));
                     }
                     swapColors(parent.parent().left(), parent.parent());
-                    rightRotate(parent.parent());
+                    redirect(parent.parent(), rightRotate(parent.parent()));
                     break;
                 } else if (uncle.color() == RED) {
                     parent.setColor(BLACK);
@@ -69,12 +73,12 @@ public class RedBlackTree<T> extends BinarySearchTree<T> {
             } else if (parent == parent.parent().right()) {
                 RedBlackNode<T> uncle = parent.parent().left();
                 //if uncle == null
-                if (uncle == null || uncle.color() == BLACK) {
+                if (uncle == endNode || uncle.color() == BLACK) {
                     if (node == parent.left()) {
                         parent.parent().setRight(rightRotate(parent));
                     }
                     swapColors(parent.parent(), parent.parent().right());
-                    leftRotate(parent.parent());
+                    redirect(parent.parent(), leftRotate(parent.parent()));
                     break;
                 } else if (uncle.color() == RED) {
                     //incapsulate this part into function
@@ -237,6 +241,7 @@ public class RedBlackTree<T> extends BinarySearchTree<T> {
 
     @Override
     public RedBlackNode<T> getRoot() {
-        return (RedBlackNode<T>) super.getRoot();
+        RedBlackNode r = (RedBlackNode<T>) super.getRoot();
+        return r != null? r: endNode;
     }
 }
