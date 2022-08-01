@@ -10,12 +10,12 @@ class RedBlackTreeTest {
     @Test
     void add() {
         RedBlackTree<Integer> rbtree = new RedBlackTree<>();
-        rbtree.add(1);
         rbtree.add(2);
+        rbtree.add(1);
         rbtree.add(3);
-        rbtree.add(4);
-        rbtree.add(5);
-        rbtree.add(6);
         TreeUtils.printInOrderTraversal(rbtree);
+
+//        rbtree.remove(3);
+//        TreeUtils.printInOrderTraversal(rbtree);
     }
 }

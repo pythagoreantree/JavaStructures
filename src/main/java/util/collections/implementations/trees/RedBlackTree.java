@@ -20,7 +20,7 @@ public class RedBlackTree<T> extends BinarySearchTree<T> {
 
     private void add(RedBlackNode<T> redBlackNode){
         RedBlackNode<T> nodeParent = endNode;
-        RedBlackNode<T> nodeToInsert = getRoot();
+        RedBlackNode<T> nodeToInsert = getRoot(); //want to optimize
         Comparable<T> newkey = (Comparable) redBlackNode.key();
         while (nodeToInsert != endNode) {
             nodeParent = nodeToInsert;
@@ -33,7 +33,10 @@ public class RedBlackTree<T> extends BinarySearchTree<T> {
         if (getRoot() == endNode) {
             setRoot(redBlackNode);
             return;
-        } else if (newkey.compareTo(redBlackNode.key()) < 0) {
+        }
+
+        T parentKey = nodeParent.key();
+        if (newkey.compareTo(parentKey) < 0) {
             nodeParent.setLeft(redBlackNode);
         } else {
             nodeParent.setRight(redBlackNode);
@@ -57,10 +60,9 @@ public class RedBlackTree<T> extends BinarySearchTree<T> {
             RedBlackNode<T> grandParent = parent.parent();
             if (parent == grandParent.left()) {
                 RedBlackNode<T> uncle = grandParent.right();
-                //if uncle == null
                 if (uncle == endNode || uncle.color() == BLACK) {
                     if (node == parent.right()) {
-                        grandParent.setLeft(leftRotate(parent));
+                        leftRotate(parent); //here I can reduce code
                     }
                     swapColors(grandParent, parent);
                     rightRotate(grandParent);
@@ -73,10 +75,9 @@ public class RedBlackTree<T> extends BinarySearchTree<T> {
                 }
             } else if (parent == grandParent.right()) {
                 RedBlackNode<T> uncle = grandParent.left();
-                //if uncle == null
                 if (uncle == endNode || uncle.color() == BLACK) {
                     if (node == parent.left()) {
-                        grandParent.setRight(rightRotate(parent));
+                        rightRotate(parent);
                     }
                     swapColors(grandParent, parent);
                     leftRotate(grandParent);
