@@ -1,9 +1,10 @@
 package util.collections.utils;
 
-import com.sun.tools.javac.util.List;
 import org.junit.jupiter.api.Test;
 import util.collections.implementations.graph.Graph;
 import util.collections.implementations.graph.GraphNode;
+
+import java.util.List;
 
 import static java.util.List.of;
 
@@ -13,6 +14,7 @@ class GraphUtilsTest {
 
     static {
         //Think how to make it easier
+        //may be add and check if existed?!
         GraphNode<Integer> node1 = new GraphNode<>(1);
         GraphNode<Integer> node2 = new GraphNode<>(2);
         GraphNode<Integer> node3 = new GraphNode<>(3);
@@ -21,21 +23,16 @@ class GraphUtilsTest {
         GraphNode<Integer> node6 = new GraphNode<>(6);
         GraphNode<Integer> node7 = new GraphNode<>(7);
 
-        graph.addNodes(List.of(node1, node2, node3, node4, node5, node6, node7));
+//        graph.addNodes(List.of(node1, node2, node3, node4, node5, node6, node7));
+//        graph.getNodeByValue(1).addNeighbors(List.of(node2));
 
-        graph.getNodeByValue(1).addNeighbors(List.of(node2));
-        graph.getNodeByValue(2).addNeighbors(List.of(node1, node3, node4));
-
-        graph.getNodeByValue(3).addNeighbors(
-                List.of(node1, node2, node4, node5, node6));
-
-        graph.getNodeByValue(4).addNeighbors(
-                List.of(node2, node3, node6));
-
-        graph.getNodeByValue(5).addNeighbor(node3);
-
-        graph.getNodeByValue(6).addNeighbors(List.of(node3, node4));
-
+        graph.addNode(node1.addNeighbor(node2));
+        graph.addNode(node2.addNeighbors(List.of(node1, node3, node4)));
+        graph.addNode(node3.addNeighbors(List.of(node1, node2, node4, node5, node6)));
+        graph.addNode(node4.addNeighbors(List.of(node2, node3, node6)));
+        graph.addNode(node5.addNeighbor(node3));
+        graph.addNode(node6.addNeighbors(List.of(node3, node4)));
+        graph.addNode(node7);
     }
 
     @Test

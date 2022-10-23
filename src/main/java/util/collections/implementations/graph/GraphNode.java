@@ -29,13 +29,15 @@ public class GraphNode<T> {
         return neighbors != null? neighbors: new ArrayList<>();
     }
 
-    public void addNeighbor(GraphNode<T> node) {
+    public GraphNode<T> addNeighbor(GraphNode<T> node) {
         //check for equality
         getNeighbors().add(node);
+        return this;
     }
 
-    public void addNeighbors(List<GraphNode<T>> nodes) {
+    public GraphNode<T> addNeighbors(List<GraphNode<T>> nodes) {
         //check for equality
         getNeighbors().addAll(nodes);
+        return this;
     }
 }
