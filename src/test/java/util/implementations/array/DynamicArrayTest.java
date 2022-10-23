@@ -2,7 +2,7 @@ package util.implementations.array;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import util.collections.implementations.arrays.dynamic.DynamicArray;
+import util.collections.implementations.array.dynamic.DynamicArray;
 
 class DynamicArrayTest {
 

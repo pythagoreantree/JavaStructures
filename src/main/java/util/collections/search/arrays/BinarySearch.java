@@ -1,6 +1,6 @@
 package util.collections.search.arrays;
 
-import util.collections.implementations.arrays.primitives.*;
+import util.collections.implementations.array.primitives.*;
 import util.collections.sort.MergeSort;
 import util.collections.sort.SortingAlgorithm;
 

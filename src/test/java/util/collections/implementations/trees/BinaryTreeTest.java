@@ -1,11 +1,10 @@
 package util.collections.implementations.trees;
 
-import org.junit.Before;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import util.collections.TreeUtils;
-
-import static org.junit.jupiter.api.Assertions.*;
+import util.collections.utils.TreeUtils;
+import util.collections.implementations.tree.BinaryTree;
+import util.collections.implementations.tree.TreeNode;
 
 class BinaryTreeTest {
 

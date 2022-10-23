@@ -1,7 +1,5 @@
 package util.collections.interfaces.tree;
 
-import util.collections.implementations.trees.TreeNode;
-
 public interface TreeNodeI<T> {
 
     TreeNodeI<T> left();

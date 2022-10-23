@@ -1,9 +1,8 @@
 package util.collections.implementations.trees;
 
 import org.junit.jupiter.api.Test;
-import util.collections.TreeUtils;
-
-import static org.junit.jupiter.api.Assertions.*;
+import util.collections.utils.TreeUtils;
+import util.collections.implementations.tree.SplayTree;
 
 class SplayTreeTest {
 

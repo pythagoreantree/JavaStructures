@@ -2,7 +2,8 @@ package util.collections.implementations.arrays;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import util.collections.implementations.arrays.primitives.IntegerArray;
+import util.collections.implementations.array.Array;
+import util.collections.implementations.array.primitives.IntegerArray;
 
 class ArrayTest {
 
