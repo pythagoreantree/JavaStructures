@@ -1,7 +1,6 @@
 package util.collections.implementations.array;
 
 import util.collections.implementations.array.enums.ArrayAccess;
-import util.collections.Jiterator;
 import util.collections.interfaces.collection.Collection;
 import util.collections.interfaces.collection.array.ArrayI;
 
@@ -222,16 +221,6 @@ public class SecureArray<T> implements Collection<T> {
         } else {
             throw new RuntimeException("Permission denied.");
         }
-    }
-
-    @Override
-    public Jiterator jiterator() {
-        return null;
-    }
-
-    @Override
-    public Jiterator jiterator(int index) {
-        return null;
     }
 
     @Override

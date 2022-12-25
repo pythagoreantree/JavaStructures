@@ -1,6 +1,5 @@
 package util.collections.implementations.array;
 
-import util.collections.Jiterator;
 import util.collections.interfaces.collection.Collection;
 import util.collections.interfaces.collection.array.ArrayI;
 
@@ -50,7 +49,7 @@ public class Array<T> implements ArrayI<T> {
         Objects.requireNonNull(collection);
         boolean allNulls = true;
         Class eClass = null;
-        for (T elem:collection){
+        for (T elem: collection){
             if (allNulls && elem != null) {
                 allNulls = false;
                 eClass = elem.getClass();
@@ -353,16 +352,6 @@ public class Array<T> implements ArrayI<T> {
             if (!collection.contains(element))
                 remove(element);
         }
-    }
-
-    @Override
-    public Jiterator<T> jiterator() {
-        return null;
-    }
-
-    @Override
-    public Jiterator<T> jiterator(int index) {
-        return null;
     }
 
     @Override

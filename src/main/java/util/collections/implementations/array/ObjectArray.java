@@ -1,6 +1,5 @@
 package util.collections.implementations.array;
 
-import util.collections.Jiterator;
 import util.collections.interfaces.collection.Collection;
 import util.collections.interfaces.collection.array.ArrayI;
 
@@ -138,16 +137,6 @@ public class ObjectArray<T> implements ArrayI<T> {
     @Override
     public void retainAll(Collection<T> c) {
 
-    }
-
-    @Override
-    public Jiterator<T> jiterator() {
-        return null;
-    }
-
-    @Override
-    public Jiterator<T> jiterator(int index) {
-        return null;
     }
 
     @Override

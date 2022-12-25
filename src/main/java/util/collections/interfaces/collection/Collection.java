@@ -1,9 +1,8 @@
 package util.collections.interfaces.collection;
 
-import lang.collections.Jiterable;
 import util.collections.Container;
 
-public interface Collection<T> extends Container, Jiterable<T> {
+public interface Collection<T> extends Container, Iterable<T> {
 
     T[] getArray();
 

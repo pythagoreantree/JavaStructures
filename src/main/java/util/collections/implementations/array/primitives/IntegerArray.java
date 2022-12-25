@@ -1,6 +1,5 @@
 package util.collections.implementations.array.primitives;
 
-import util.collections.Jiterator;
 import util.collections.implementations.array.Array;
 import util.collections.interfaces.collection.Collection;
 import util.collections.interfaces.collection.array.ArrayI;
@@ -169,14 +168,6 @@ public class IntegerArray implements ArrayI<Integer> {
     @Override
     public void retainAll(Collection<Integer> collection) {
         requireNonNull(array).retainAll(collection);
-    }
-
-    public Jiterator jiterator() {
-        return null;
-    }
-
-    public Jiterator jiterator(int index) {
-        return null;
     }
 
     public Iterator iterator() {

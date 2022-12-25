@@ -1,12 +1,10 @@
 package util.collections.implementations.array.dynamic;
 
-import util.collections.Jiterator;
 import util.collections.implementations.array.Array;
 import util.collections.interfaces.collection.Collection;
 import util.collections.interfaces.collection.array.ArrayI;
 
 import java.util.Comparator;
-import java.util.Iterator;
 import java.util.NoSuchElementException;
 import java.util.Objects;
 
@@ -378,21 +376,6 @@ public class DynamicArray<E> implements ArrayI<E> {
 
     @Override
     public void retainAll(Collection<E> c) {
-    }
-
-    @Override
-    public Jiterator<E> jiterator() {
-        return null;
-    }
-
-    @Override
-    public Jiterator<E> jiterator(int index) {
-        return null;
-    }
-
-    @Override
-    public Iterator<E> iterator() {
-        return null;
     }
 
     public boolean isAllowNull() {
